@@ -1,13 +1,17 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Notifications } from 'expo';
+import {
+  StyleSheet,
+  View } from 'react-native';
+import {
+  Notifications,
+  ImagePicker
+} from 'expo';
 import {
   StackNavigation,
   TabNavigation,
   TabNavigationItem,
 } from '@expo/ex-navigation';
 import { FontAwesome } from '@expo/vector-icons';
-
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync
@@ -21,10 +25,21 @@ export default class RootNavigation extends React.Component {
   componentWillUnmount() {
     this._notificationSubscription && this._notificationSubscription.remove();
   }
+  state = {
+    image: null
+  };
 
   render() {
+    let { image } = this.state;
+
     return (
       <TabNavigation tabBarHeight={56} initialTab="home">
+        <TabNavigationItem
+          id="camera"
+          renderIcon={isSelected => this._renderIcon('camera', isSelected)}>
+          <StackNavigation initialRoute="camera" />
+        </TabNavigationItem>
+
         <TabNavigationItem
           id="home"
           renderIcon={isSelected => this._renderIcon('home', isSelected)}>
@@ -68,6 +83,18 @@ export default class RootNavigation extends React.Component {
       this._handleNotification
     );
   }
+
+  _takePicture = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
 
   _handleNotification = ({ origin, data }) => {
     this.props.navigator.showLocalAlert(

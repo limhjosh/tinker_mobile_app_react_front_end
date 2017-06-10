@@ -44,11 +44,34 @@ export default class PizzaTranslator extends Component {
    render() {
      return (
        <View style={styles.container}>
-        <TextInput
-          style={{height: 40}}
-          placeholder="Enter your username"
-          onChangeText={(text) => this.setState({ username: text })}
-        />
+        <View style={styles.textInput}>
+          <TextInput
+            style={{height: 40}}
+            placeholder="select username"
+            onChangeText={(text) => this.setState({ username: text })}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <TextInput
+            style={{height: 40}}
+            placeholder="enter email"
+            onChangeText={(text) => this.setState({ email: text })}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <TextInput
+            style={{height: 40}}
+            placeholder="create password"
+            onChangeText={(text) => this.setState({ password: text })}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <TextInput
+            style={{height: 40}}
+            placeholder="confirm password"
+            onChangeText={(text) => this.setState({ password_confirm: text })}
+          />
+        </View>
         <View style={styles.alternativeLayoutButtonContainer}>
           <Button
             onPress={this._onPressButton.bind(this)}
@@ -56,7 +79,7 @@ export default class PizzaTranslator extends Component {
             color='#fff'
           />
         </View>
-        <Text style={{padding: 10, fontSize: 42}}>
+        <Text style={{padding: 10, fontSize: 22}}>
           {this.state.userinfo}
         </Text>
       </View>
@@ -68,13 +91,17 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    justifyContent: 'center',
-   margin: 15,
+   margin: 15
+  },
+  textInput: {
+    borderBottomColor: '#607D8B',
+    borderBottomWidth: 2
   },
   buttonContainer: {
     margin: 20
   },
   alternativeLayoutButtonContainer: {
-    margin: 20,
+    margin: 30,
     flexDirection: 'row',
     backgroundColor: '#607D8B',
     justifyContent: 'center'

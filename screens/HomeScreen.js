@@ -9,15 +9,16 @@ import {
   TouchableOpacity,
   View,
   AppRegistry,
+  Button
 } from 'react-native';
-
-
+import {
+  ImagePicker
+} from 'expo';
 import {
   createRouter,
   NavigationProvider,
   StackNavigation,
-} from '@expo/ex-navigation';
-
+} from '@expo/ex-navigation'
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
@@ -26,8 +27,13 @@ export default class HomeScreen extends React.Component {
       visible: false,
     },
   };
+  state = {
+    image: null
+  };
 
   render() {
+    let { image } = this.state;
+
     return (
       <View style={styles.container}>
         <ScrollView
@@ -102,7 +108,6 @@ export default class HomeScreen extends React.Component {
   _handleSignUpPress = () => {
     this.props.navigator.push('signUpForm')
   };
-
 }
 
 
