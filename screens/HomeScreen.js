@@ -29,7 +29,6 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
-    const { navigate } = this.props.navigator;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -68,6 +67,17 @@ export default class HomeScreen extends React.Component {
               style={styles.helpLink}>
               <Text style={styles.helpLinkText}>
                 Let’s get started!
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <TouchableOpacity
+              onPress={this._handleFormViewPress}
+              // onPress={() => navigate('signUp')}
+              style={styles.helpLink}>
+              <Text style={styles.helpLinkText}>
+                form view
               </Text>
             </TouchableOpacity>
           </View>
@@ -122,6 +132,10 @@ export default class HomeScreen extends React.Component {
     Linking.openURL(
       'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
     );
+  };
+
+  _handleFormViewPress = () => {
+    this.props.navigator.push('formView')
   };
 
   _handleSignUpPress = () => {

@@ -1,6 +1,19 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+} from 'react-native';
+
+import { Form,
+  Separator,InputField, LinkField,
+  SwitchField, PickerField,DatePickerField,TimePickerField
+} from 'react-native-form-generator';
+
 import { ExpoConfigView } from '@expo/samples';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class SignUpScreen extends React.Component {
   static route = {
