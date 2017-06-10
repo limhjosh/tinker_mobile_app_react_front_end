@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { AppRegistry, Text, TextInput, View, Button, Alert, StyleSheet, AlertIOS } from 'react-native';
+import {
+  AppRegistry,
+  Text,
+  TextInput,
+  View,
+  Button,
+  Alert,
+  StyleSheet,
+  AlertIOS
+} from 'react-native';
 
 export default class PizzaTranslator extends Component {
   constructor(props) {
@@ -24,18 +33,17 @@ export default class PizzaTranslator extends Component {
        },
        body: JSON.stringify({ user: { username: this.state.username } })
      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson)
-        this.setState({ userinfo: JSON.stringify(responseJson) })
-      })
-      .done()
-  }
+     .then((response) => response.json())
+     .then((responseJson) => {
+       console.log(responseJson)
+       this.setState({ userinfo: JSON.stringify(responseJson) })
+     })
+     .done()
+   }
 
-
-  render() {
-    return (
-      <View style={styles.container}>
+   render() {
+     return (
+       <View style={styles.container}>
         <TextInput
           style={{height: 40}}
           placeholder="Enter your username"
@@ -44,7 +52,8 @@ export default class PizzaTranslator extends Component {
         <View style={styles.alternativeLayoutButtonContainer}>
           <Button
             onPress={this._onPressButton.bind(this)}
-            title="Press Me"
+            title="Next"
+            color='#fff'
           />
         </View>
         <Text style={{padding: 10, fontSize: 42}}>
@@ -59,6 +68,7 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    justifyContent: 'center',
+   margin: 15,
   },
   buttonContainer: {
     margin: 20
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
   alternativeLayoutButtonContainer: {
     margin: 20,
     flexDirection: 'row',
-    backgroundColor: '#f5f5dc',
+    backgroundColor: '#607D8B',
     justifyContent: 'center'
   }
 })

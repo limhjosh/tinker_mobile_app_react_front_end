@@ -19,7 +19,6 @@ import {
 } from '@expo/ex-navigation';
 
 import { MonoText } from '../components/StyledText';
-import SignUpScreen from '../screens/SignUpScreen';
 
 export default class HomeScreen extends React.Component {
   static route = {
@@ -45,39 +44,17 @@ export default class HomeScreen extends React.Component {
           <View style={styles.getStartedContainer}>
             {this._maybeRenderDevelopmentModeWarning()}
 
-            <Text style={styles.getStartedText}>
+            <Text style={styles.logo}>
               TINKER
             </Text>
           </View>
 
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View>
+          <View style={styles.signUpContainer}>
             <TouchableOpacity
               onPress={this._handleSignUpPress}
-              // onPress={() => navigate('signUp')}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Let’s get started!
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity
-              onPress={this._handleFormViewPress}
-              // onPress={() => navigate('signUp')}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                form view
+              style={styles.signUpLink}>
+              <Text style={styles.signUpLinkText}>
+                Sign up
               </Text>
             </TouchableOpacity>
           </View>
@@ -122,25 +99,10 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  _handleLearnMorePress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/development-mode'
-    );
-  };
-
-  _handleHelpPress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
-
-  _handleFormViewPress = () => {
-    this.props.navigator.push('formView')
-  };
-
   _handleSignUpPress = () => {
-    this.props.navigator.push('signUp')
+    this.props.navigator.push('signUpForm')
   };
+
 }
 
 
@@ -185,10 +147,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 23,
+  logo: {
+    fontSize: 60,
+    color: '#607D8B',
+    lineHeight: 60,
     textAlign: 'center',
   },
   tabBarInfoContainer: {
@@ -219,15 +181,15 @@ const styles = StyleSheet.create({
   navigationFilename: {
     marginTop: 5,
   },
-  helpContainer: {
+  signUpContainer: {
     marginTop: 15,
     alignItems: 'center',
   },
-  helpLink: {
+  signUpLink: {
     paddingVertical: 15,
   },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+  signUpLinkText: {
+    fontSize: 20,
+    color: '#263238',
   },
 });
