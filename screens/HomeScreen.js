@@ -8,9 +8,18 @@ import {
   Text,
   TouchableOpacity,
   View,
+  AppRegistry,
 } from 'react-native';
 
+
+import {
+  createRouter,
+  NavigationProvider,
+  StackNavigation,
+} from '@expo/ex-navigation';
+
 import { MonoText } from '../components/StyledText';
+import SignUpScreen from '../screens/SignUpScreen';
 
 export default class HomeScreen extends React.Component {
   static route = {
@@ -20,6 +29,7 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
+    const { navigate } = this.props.navigator;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -37,21 +47,7 @@ export default class HomeScreen extends React.Component {
             {this._maybeRenderDevelopmentModeWarning()}
 
             <Text style={styles.getStartedText}>
-              Get started by opening
-            </Text>
-
-            <View
-              style={[
-                styles.codeHighlightContainer,
-                styles.homeScreenFilename,
-              ]}>
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
+              TINKER
             </Text>
           </View>
 
@@ -61,6 +57,17 @@ export default class HomeScreen extends React.Component {
               style={styles.helpLink}>
               <Text style={styles.helpLinkText}>
                 Help, it didn’t automatically reload!
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <TouchableOpacity
+              onPress={this._handleSignUpPress}
+              // onPress={() => navigate('signUp')}
+              style={styles.helpLink}>
+              <Text style={styles.helpLinkText}>
+                Let’s get started!
               </Text>
             </TouchableOpacity>
           </View>
@@ -116,7 +123,12 @@ export default class HomeScreen extends React.Component {
       'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
     );
   };
+
+  _handleSignUpPress = () => {
+    this.props.navigator.push('signUp')
+  };
 }
+
 
 const styles = StyleSheet.create({
   container: {
