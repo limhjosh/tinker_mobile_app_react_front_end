@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Text,
-  View,
-  Button,
-  Alert,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
   ActivityIndicator,
-  StatusBar
+  Button,
+  Clipboard,
+  Image,
+  Share,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import {
-  ImagePicker,
   Constants,
-  registerRootComponent
+  ImagePicker,
+  registerRootComponent,
 } from 'expo';
 
 @registerRootComponent
-export default class ImagePickerExample extends React.Component {
+export default class App extends React.Component {
   state = {
     image: null,
     uploading: false,
@@ -28,49 +29,30 @@ export default class ImagePickerExample extends React.Component {
 
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={this._pickImage}>
-          <View>
-            <Text>Pick an image from camera roll</Text>
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={this._takePhoto}>
-          <View>
-            <Text>Take Picture</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.pickImage}>
+          <Button
+            onPress={this._pickImage}
+            color="#607D8B"
+            title="Select photo"
+          />
+        </View>
 
-        {image &&
-          <Image source={{uri: image}} style={{width: 200, height: 200}} /> }
-          { this._maybeRenderUploadingOverlay() }
+        <View style={styles.takePhoto}>
+          <Button
+            onPress={this._takePhoto}
+            color="#607D8B"
+            title="Take photo"
+          />
+        </View>
 
-          <StatusBar barStyle="default" />
+        { this._maybeRenderImage() }
+        { this._maybeRenderUploadingOverlay() }
+
+        <StatusBar barStyle="default" />
       </View>
     );
   }
-  _takePhoto = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      aspect: [4, 3],
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-  };
-
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      aspect: [4,3]
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({image: result.uri});
-    }
-  };
 
   _maybeRenderUploadingOverlay = () => {
     if (this.state.uploading) {
@@ -84,7 +66,70 @@ export default class ImagePickerExample extends React.Component {
         </View>
       );
     }
-  };
+  }
+
+  _maybeRenderImage = () => {
+    let { image } = this.state;
+    if (!image) {
+      return;
+    }
+
+    return (
+      <View style={{
+        marginTop: 30,
+        width: 250,
+        borderRadius: 3,
+        elevation: 2,
+        shadowColor: 'rgba(0,0,0,1)',
+        shadowOpacity: 0.2,
+        shadowOffset: {width: 4, height: 4},
+        shadowRadius: 5,
+      }}>
+        <View style={{borderTopRightRadius: 3, borderTopLeftRadius: 3, overflow: 'hidden'}}>
+          <Image
+            source={{uri: image}}
+            style={{width: 250, height: 250}}
+          />
+        </View>
+
+        <Text
+          onPress={this._copyToClipboard}
+          onLongPress={this._share}
+          style={{paddingVertical: 10, paddingHorizontal: 10}}>
+          {image}
+        </Text>
+      </View>
+    );
+  }
+
+  _share = () => {
+    Share.share({
+      message: this.state.image,
+      title: 'Check out this photo',
+      url: this.state.image,
+    });
+  }
+
+  _copyToClipboard = () => {
+    Clipboard.setString(this.state.image);
+    alert('Copied image URL to clipboard');
+  }
+
+  _takePhoto = async () => {
+    let pickerResult = await ImagePicker.launchCameraAsync({
+      aspect: [4,3]
+    });
+
+    this._handleImagePicked(pickerResult);
+  }
+
+  _pickImage = async () => {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      aspect: [4,3]
+    });
+
+    this._handleImagePicked(pickerResult);
+  }
 
   _handleImagePicked = async (pickerResult) => {
     let uploadResponse, uploadResult;
@@ -107,6 +152,18 @@ export default class ImagePickerExample extends React.Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  takePhoto: {
+    margin: 10,
+  },
+  pickImage: {
+    margin: 10,
+  },
+  pickImageText: {
+    fontSize: 50,
+  }
+})
 
 async function uploadImageAsync(uri) {
   let apiUrl = 'https://file-upload-example-backend-dkhqoilqqn.now.sh/upload';
