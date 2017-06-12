@@ -5,6 +5,7 @@ import {
   Alert,
   StyleSheet,
 } from 'react-native';
+import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 
 export default class Notifications extends Component {
 
@@ -12,7 +13,7 @@ export default class Notifications extends Component {
      return (
        <View style={styles.container}>
 
-        <Text style={{padding: 10, fontSize: 22}}>
+        <Text style={{padding: 10, fontSize: 22, margin: 15}}>
           you have no notifications
         </Text>
       </View>
@@ -22,8 +23,8 @@ export default class Notifications extends Component {
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
-   justifyContent: 'center',
-   margin: 15
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: COLOR_BACKGROUND,
   },
 })

@@ -20,7 +20,7 @@ import {
 } from '@expo/ex-navigation'
 import { MonoText } from '../components/StyledText';
 import { Ionicons } from '@expo/vector-icons';
-import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
+import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 
 export default class HomeScreen extends React.Component {
   static route = {
@@ -37,46 +37,36 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
 
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../assets/images/tinker.png')}
-              style={styles.logoImage}
-            />
-          </View>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../assets/images/tinker.png')}
+            style={styles.logoImage}
+          />
+        </View>
 
-          <View style={styles.linkContainer}>
+        <View style={styles.linkContainer}>
+          <TouchableOpacity
+            onPress={this._handleLoginPress}
+            style={[styles.loginLink, styles.link]}>
+            <Ionicons name="ios-log-in" size={32} color="#fff" />
+            <Text style={styles.linkText}>
+              Log in
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-            <TouchableOpacity
-              onPress={this._handleLoginPress}
-              style={[styles.link, styles.loginLink]}>
-              <Ionicons name="ios-log-in" size={32} color="#fff" />
+        <View style={styles.linkContainer}>
+          <TouchableOpacity
+            onPress={this._handleSignUpPress}
+            style={[styles.link, styles.signUpLink]}>
+            <Ionicons name="ios-create-outline" size={32} color="#fff" />
+            <Text style={styles.linkText}>
+              Sign up
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-              <Text style={styles.linkText}>
-                Log in
-              </Text>
-
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.linkContainer}>
-
-            <TouchableOpacity
-              onPress={this._handleSignUpPress}
-              style={[styles.signUpLink, styles.link]}>
-              <Ionicons name="ios-create-outline" size={32} color="#fff" />
-
-              <Text style={styles.linkText}>
-                Sign up
-              </Text>
-
-            </TouchableOpacity>
-          </View>
-
-        </ScrollView>
       </View>
     );
   }
@@ -94,10 +84,8 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fbf6ef',
-  },
-  contentContainer: {
     paddingTop: 80,
+    backgroundColor: COLOR_BACKGROUND,
   },
   logoContainer: {
     alignItems: 'center',
@@ -111,14 +99,12 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginLeft: -10,
   },
-  linkContainer: {
-    alignItems: 'center',
-  },
   link: {
     padding: 10,
     paddingVertical: 30,
     width: '100%',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   loginLink: {

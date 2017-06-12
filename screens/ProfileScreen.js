@@ -9,6 +9,7 @@ import {
   StyleSheet,
   AlertIOS
 } from 'react-native';
+import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 
 export default class ProfileScreen extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class ProfileScreen extends Component {
     this.state = {
       username: '',
       first_name: '',
-      last_name: ''
+      last_name: '',
     };
   }
 
@@ -24,19 +25,19 @@ export default class ProfileScreen extends Component {
      return (
        <View style={styles.container}>
         <View style={styles.usernameContainer}>
-          <Text style={styles.usernameText}>
+          <Text style={styles.nameText}>
             matth3wjones
             {this.state.username}
           </Text>
         </View>
         <View style={styles.firstNameContainer}>
-          <Text style={styles.firstNameText}>
+          <Text style={styles.nameText}>
             Matthew
             {this.state.first_name}
           </Text>
         </View>
         <View style={styles.lastNameContainer}>
-          <Text style={styles.lastNameText}>
+          <Text style={styles.nameText}>
             Jones
             {this.state.last_name}
           </Text>
@@ -50,23 +51,9 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    justifyContent: 'center',
-   margin: 15
+   backgroundColor: COLOR_BACKGROUND,
   },
-  usernameContainer: {
-  },
-  usernameText: {
-    padding: 10,
-    fontSize: 20
-  },
-  firstNameContainer: {
-  },
-  firstNameText: {
-    padding: 10,
-    fontSize: 20
-  },
-  lastNameContainer: {
-  },
-  lastNameText: {
+  nameText: {
     padding: 10,
     fontSize: 20
   },

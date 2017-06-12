@@ -17,7 +17,7 @@ import {
   registerRootComponent,
 } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
+import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 
 @registerRootComponent
 export default class App extends React.Component {
@@ -30,7 +30,7 @@ export default class App extends React.Component {
     let { image } = this.state;
 
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={styles.container}>
 
         <View style={[styles.selectPhoto, styles.photo]}>
           <Ionicons name="ios-image-outline" size={32} color="#fff" />
@@ -170,6 +170,12 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLOR_BACKGROUND,
+  },
   photo: {
     padding: 10,
     paddingVertical: 30,
