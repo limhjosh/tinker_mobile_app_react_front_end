@@ -7,7 +7,8 @@ import {
   Button,
   Alert,
   StyleSheet,
-  AlertIOS
+  AlertIOS,
+  TouchableOpacity,
 } from 'react-native';
 
 export default class PizzaTranslator extends Component {
@@ -44,47 +45,51 @@ export default class PizzaTranslator extends Component {
    render() {
      return (
        <View style={styles.container}>
+
         <View style={styles.textInput}>
           <TextInput
             style={{height: 40}}
-            placeholder="select username"
+            placeholder="username"
             onChangeText={(text) => this.setState({ username: text })}
           />
         </View>
+
         <View style={styles.textInput}>
           <TextInput
             style={{height: 40}}
-            placeholder="enter email"
-            onChangeText={(text) => this.setState({ email: text })}
-          />
-        </View>
-        <View style={styles.textInput}>
-          <TextInput
-            style={{height: 40}}
-            placeholder="create password"
+            placeholder="password"
             onChangeText={(text) => this.setState({ password: text })}
           />
         </View>
-        <View style={styles.textInput}>
-          <TextInput
-            style={{height: 40}}
-            placeholder="confirm password"
-            onChangeText={(text) => this.setState({ password_confirm: text })}
-          />
-        </View>
-        <View style={styles.alternativeLayoutButtonContainer}>
+
+        <View style={styles.ButtonContainer}>
           <Button
             onPress={this._onPressButton.bind(this)}
-            title="Next"
+            title="Login"
             color='#fff'
           />
         </View>
+
         <Text style={{padding: 10, fontSize: 22}}>
           {this.state.userinfo}
         </Text>
+
+        <View style={styles.linkContainer}>
+          <TouchableOpacity
+            onPress={this._handleBackPress}
+            style={styles.backLink}>
+            <Text style={styles.backLinkText}>
+              Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     );
   }
+  _handleBackPress = () => {
+    this.props.navigator.push('home')
+  };
 }
 
 const styles = StyleSheet.create({
@@ -100,10 +105,13 @@ const styles = StyleSheet.create({
   buttonContainer: {
     margin: 20
   },
-  alternativeLayoutButtonContainer: {
+  ButtonContainer: {
     margin: 30,
     flexDirection: 'row',
     backgroundColor: '#607D8B',
     justifyContent: 'center'
-  }
+  },
+  linkContainer: {
+    alignItems: 'center',
+  },
 })

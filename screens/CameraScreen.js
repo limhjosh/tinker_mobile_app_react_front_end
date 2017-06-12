@@ -16,6 +16,7 @@ import {
   ImagePicker,
   registerRootComponent,
 } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 
 @registerRootComponent
 export default class App extends React.Component {
@@ -30,18 +31,22 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
-        <View style={styles.pickImage}>
+        <View style={styles.selectPhoto}>
+          <Ionicons name="ios-image-outline" size={32} color="#fff" />
+
           <Button
-            onPress={this._pickImage}
-            color="#607D8B"
+            onPress={this._selectPhoto}
+            color="#fff"
             title="Select photo"
           />
         </View>
 
         <View style={styles.takePhoto}>
+          <Ionicons name="ios-aperture-outline" size={32} color="#fff" />
+
           <Button
             onPress={this._takePhoto}
-            color="#607D8B"
+            color="#fff"
             title="Take photo"
           />
         </View>
@@ -102,6 +107,16 @@ export default class App extends React.Component {
     );
   }
 
+  _renderIcon(name, isSelected) {
+    return (
+      <Ionicons
+        name={name}
+        size={32}
+        color={isSelected ? Colors.tabIconSelected : Colors.tabIconDefault}
+      />
+    );
+  }
+
   _share = () => {
     Share.share({
       message: this.state.image,
@@ -123,7 +138,7 @@ export default class App extends React.Component {
     this._handleImagePicked(pickerResult);
   }
 
-  _pickImage = async () => {
+  _selectPhoto = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       aspect: [4,3]
     });
@@ -154,15 +169,24 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  selectPhoto: {
+    padding: 10,
+    paddingVertical: 30,
+    backgroundColor: '#DEB87C',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   takePhoto: {
-    margin: 10,
+    padding: 10,
+    paddingVertical: 30,
+    backgroundColor: '#8AC4CF',
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  pickImage: {
-    margin: 10,
-  },
-  pickImageText: {
-    fontSize: 50,
-  }
 })
 
 async function uploadImageAsync(uri) {

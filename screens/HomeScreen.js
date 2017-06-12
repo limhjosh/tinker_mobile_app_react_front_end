@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
   AppRegistry,
-  Button
+  Button,
 } from 'react-native';
 import {
   ImagePicker
@@ -42,22 +42,23 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.logoContainer}>
             <Image
-              source={require('../assets/images/button-logo.png')}
+              source={require('../assets/images/tinker.png')}
               style={styles.logoImage}
             />
           </View>
 
-          <View style={styles.signUpContainer}>
+          <View style={styles.linkContainer}>
+
             <TouchableOpacity
-              onPress={this._handleSignUpPress}
-              style={styles.signUpLink}>
+              onPress={this._handleLoginPress}
+              style={styles.loginLink}>
               <Text style={styles.signUpLinkText}>
                 Login
               </Text>
             </TouchableOpacity>
           </View>
 
-          <View style={styles.signUpContainer}>
+          <View style={styles.linkContainer}>
             <TouchableOpacity
               onPress={this._handleSignUpPress}
               style={styles.signUpLink}>
@@ -66,13 +67,18 @@ export default class HomeScreen extends React.Component {
               </Text>
             </TouchableOpacity>
           </View>
+
         </ScrollView>
       </View>
     );
   }
 
   _handleSignUpPress = () => {
-    this.props.navigator.push('signUpForm')
+    this.props.navigator.push('signUp')
+  };
+
+  _handleLoginPress = () => {
+    this.props.navigator.push('login')
   };
 }
 
@@ -80,7 +86,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fbf6ef',
   },
   contentContainer: {
     paddingTop: 80,
@@ -91,21 +97,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoImage: {
-    width: 200,
-    height: 100,
+    width: 400,
+    height: 200,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
   },
-  signUpContainer: {
-    marginTop: 15,
+  linkContainer: {
+    alignItems: 'center',
+  },
+  loginLink: {
+    padding: 10,
+    paddingVertical: 30,
+    backgroundColor: '#DEB87C',
+    width: '100%',
     alignItems: 'center',
   },
   signUpLink: {
-    paddingVertical: 15,
+    padding: 10,
+    paddingVertical: 30,
+    backgroundColor: '#8AC4CF',
+    width: '100%',
+    alignItems: 'center',
   },
   signUpLinkText: {
     fontSize: 20,
-    color: '#263238',
+    color: '#fff',
   },
 });
