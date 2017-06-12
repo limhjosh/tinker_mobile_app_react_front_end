@@ -6,14 +6,14 @@ import {
   StyleSheet,
 } from 'react-native';
 
-export default class Notifications extends Component {
+export default class Explore extends Component {
 
    render() {
      return (
        <View style={styles.container}>
 
         <Text style={{padding: 10, fontSize: 22}}>
-          you have no notifications
+          Find new stylists
         </Text>
       </View>
     );

@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
   AppRegistry,
-  Button,
 } from 'react-native';
 import {
   ImagePicker
@@ -20,6 +19,8 @@ import {
   StackNavigation,
 } from '@expo/ex-navigation'
 import { MonoText } from '../components/StyledText';
+import { Ionicons } from '@expo/vector-icons';
+import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
 
 export default class HomeScreen extends React.Component {
   static route = {
@@ -51,20 +52,27 @@ export default class HomeScreen extends React.Component {
 
             <TouchableOpacity
               onPress={this._handleLoginPress}
-              style={styles.loginLink}>
-              <Text style={styles.signUpLinkText}>
-                Login
+              style={[styles.link, styles.loginLink]}>
+              <Ionicons name="ios-log-in" size={32} color="#fff" />
+
+              <Text style={styles.linkText}>
+                Log in
               </Text>
+
             </TouchableOpacity>
           </View>
 
           <View style={styles.linkContainer}>
+
             <TouchableOpacity
               onPress={this._handleSignUpPress}
-              style={styles.signUpLink}>
-              <Text style={styles.signUpLinkText}>
+              style={[styles.signUpLink, styles.link]}>
+              <Ionicons name="ios-create-outline" size={32} color="#fff" />
+
+              <Text style={styles.linkText}>
                 Sign up
               </Text>
+
             </TouchableOpacity>
           </View>
 
@@ -106,22 +114,22 @@ const styles = StyleSheet.create({
   linkContainer: {
     alignItems: 'center',
   },
-  loginLink: {
+  link: {
     padding: 10,
     paddingVertical: 30,
-    backgroundColor: '#DEB87C',
     width: '100%',
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  loginLink: {
+    backgroundColor: COLOR_BEIGE,
   },
   signUpLink: {
-    padding: 10,
-    paddingVertical: 30,
-    backgroundColor: '#8AC4CF',
-    width: '100%',
-    alignItems: 'center',
+    backgroundColor: COLOR_BLUE,
   },
-  signUpLinkText: {
+  linkText: {
     fontSize: 20,
     color: '#fff',
+    marginLeft: 5,
   },
 });

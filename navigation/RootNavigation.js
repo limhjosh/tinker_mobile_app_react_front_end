@@ -33,7 +33,7 @@ export default class RootNavigation extends React.Component {
     let { image } = this.state;
 
     return (
-      <TabNavigation tabBarHeight={56} initialTab="home">
+      <TabNavigation tabBarHeight={56} initialTab="home" tabBarStyle={{ backgroundColor: '#fbf6ef' }}>
         <TabNavigationItem
           id="camera"
           renderIcon={isSelected => this._renderIcon('ios-camera-outline', isSelected)}>
@@ -47,9 +47,9 @@ export default class RootNavigation extends React.Component {
         </TabNavigationItem>
 
         <TabNavigationItem
-          id="home"
+          id="explore"
           renderIcon={isSelected => this._renderIcon('ios-contacts-outline', isSelected)}>
-          <StackNavigation initialRoute="home" />
+          <StackNavigation initialRoute="explore" />
         </TabNavigationItem>
 
         <TabNavigationItem

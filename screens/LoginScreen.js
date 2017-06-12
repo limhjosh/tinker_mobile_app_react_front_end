@@ -10,6 +10,7 @@ import {
   AlertIOS,
   TouchableOpacity,
 } from 'react-native';
+import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
 
 export default class PizzaTranslator extends Component {
   constructor(props) {
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
    margin: 15
   },
   textInput: {
-    borderBottomColor: '#607D8B',
+    borderBottomColor: COLOR_BEIGE,
     borderBottomWidth: 2
   },
   buttonContainer: {
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     margin: 30,
     flexDirection: 'row',
-    backgroundColor: '#607D8B',
+    backgroundColor: COLOR_BLUE,
     justifyContent: 'center'
   },
   linkContainer: {

@@ -17,6 +17,7 @@ import {
   registerRootComponent,
 } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
 
 @registerRootComponent
 export default class App extends React.Component {
@@ -31,7 +32,7 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 
-        <View style={styles.selectPhoto}>
+        <View style={[styles.selectPhoto, styles.photo]}>
           <Ionicons name="ios-image-outline" size={32} color="#fff" />
 
           <Button
@@ -41,7 +42,7 @@ export default class App extends React.Component {
           />
         </View>
 
-        <View style={styles.takePhoto}>
+        <View style={[styles.takePhoto, styles.photo]}>
           <Ionicons name="ios-aperture-outline" size={32} color="#fff" />
 
           <Button
@@ -169,23 +170,19 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  selectPhoto: {
+  photo: {
     padding: 10,
     paddingVertical: 30,
-    backgroundColor: '#DEB87C',
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+  selectPhoto: {
+    backgroundColor: COLOR_BEIGE,
   },
   takePhoto: {
-    padding: 10,
-    paddingVertical: 30,
-    backgroundColor: '#8AC4CF',
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: COLOR_BLUE,
   },
 })
 

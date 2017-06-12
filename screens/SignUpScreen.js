@@ -10,6 +10,8 @@ import {
   AlertIOS,
   TouchableOpacity,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
 
 export default class PizzaTranslator extends Component {
   constructor(props) {
@@ -54,6 +56,7 @@ export default class PizzaTranslator extends Component {
             onChangeText={(text) => this.setState({ username: text })}
           />
         </View>
+
         <View style={styles.textInput}>
           <TextInput
             style={{height: 40}}
@@ -61,6 +64,7 @@ export default class PizzaTranslator extends Component {
             onChangeText={(text) => this.setState({ email: text })}
           />
         </View>
+
         <View style={styles.textInput}>
           <TextInput
             style={{height: 40}}
@@ -68,6 +72,7 @@ export default class PizzaTranslator extends Component {
             onChangeText={(text) => this.setState({ password: text })}
           />
         </View>
+
         <View style={styles.textInput}>
           <TextInput
             style={{height: 40}}
@@ -75,13 +80,16 @@ export default class PizzaTranslator extends Component {
             onChangeText={(text) => this.setState({ password_confirmation: text })}
           />
         </View>
-        <View style={styles.ButtonContainer}>
+
+        <View style={styles.buttonContainer}>
           <Button
             onPress={this._onPressButton.bind(this)}
             title="Next"
             color='#fff'
+            style={styles.buttonText}
           />
         </View>
+
         <Text style={{padding: 10, fontSize: 22}}>
           {this.state.userinfo}
         </Text>
@@ -111,17 +119,16 @@ const styles = StyleSheet.create({
    margin: 15
   },
   textInput: {
-    borderBottomColor: '#DEB87C',
+    borderBottomColor: COLOR_BEIGE,
     borderBottomWidth: 2
   },
   buttonContainer: {
-    margin: 20
-  },
-  ButtonContainer: {
     margin: 30,
     flexDirection: 'row',
-    backgroundColor: '#8AC4CF',
-    justifyContent: 'center'
+    backgroundColor: COLOR_BLUE,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   linkContainer: {
     alignItems: 'center',
