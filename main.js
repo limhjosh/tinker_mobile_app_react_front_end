@@ -7,6 +7,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
+export class GlobalState {
+  static cache = {test: "test"}
+}
+
 class AppContainer extends React.Component {
   state = {
     appIsReady: false,

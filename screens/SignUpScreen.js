@@ -21,22 +21,18 @@ export default class PizzaTranslator extends Component {
       email: '',
       password: '',
       password_confirmation: '',
-      userinfo: ''
+      userinfo: '',
     };
   }
 
-  successCallBack(data) {
-    console.log(data)
-  }
-
   _onPressButton() {
-     fetch('https://tinker-backend.herokuapp.com/users', {
+     fetch('http://localhost:3000/users', {
        method: 'POST',
        headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json'
        },
-       body: JSON.stringify({ user: { username: this.state.username } })
+       body: JSON.stringify({ user: { username: this.state.username, email: this.state.email, password: this.state.password, password_confirmation: this.state.password_confirmation } })
      })
      .then((response) => response.json())
      .then((responseJson) => {
@@ -67,6 +63,7 @@ export default class PizzaTranslator extends Component {
 
         <View style={styles.textInput}>
           <TextInput
+            secureTextEntry={true}
             style={{height: 40}}
             placeholder="create password"
             onChangeText={(text) => this.setState({ password: text })}
@@ -75,6 +72,7 @@ export default class PizzaTranslator extends Component {
 
         <View style={styles.textInput}>
           <TextInput
+            secureTextEntry={true}
             style={{height: 40}}
             placeholder="confirm password"
             onChangeText={(text) => this.setState({ password_confirmation: text })}

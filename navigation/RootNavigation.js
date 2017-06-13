@@ -26,7 +26,8 @@ export default class RootNavigation extends React.Component {
     this._notificationSubscription && this._notificationSubscription.remove();
   }
   state = {
-    image: null
+    image: null,
+    auth_token: '',
   };
 
   render() {

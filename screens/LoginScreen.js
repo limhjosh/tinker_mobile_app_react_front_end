@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   AppRegistry,
   Text,
   TextInput,
@@ -11,33 +12,44 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
+import { AuthAsync } from '../utilities/authAsync'
+import { GlobalState } from '../main.js'
 
-export default class PizzaTranslator extends Component {
+
+export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
-      userinfo: ''
+      password: '',
+      userinfo: '',
     };
   }
 
-  successCallBack(data) {
-    console.log(data)
-    this.setState({ text: 'Hello' })
-  }
-
   _onPressButton() {
-     fetch('https://tinker-backend.herokuapp.com/users', {
+     fetch('http://localhost:3000/authenticate', {
        method: 'POST',
        headers: {
          'Accept': 'application/json',
-         'Content-Type': 'application/json'
+         'Content-Type': 'application/json',
+        //  'auth_token':
        },
-       body: JSON.stringify({ user: { username: this.state.username } })
+       body: JSON.stringify({ user: {
+         username: this.state.username,
+         password: this.state.password }
+       })
      })
      .then((response) => response.json())
      .then((responseJson) => {
-       console.log(responseJson)
+       console.log("response",responseJson)
+
+       GlobalState.cache.auth_token = responseJson.auth_token
+       GlobalState.cache.user_id = responseJson.id
+
+       console.log('Global', GlobalState.cache)
+
+       this._onLogin(responseJson.auth_token)
+
        this.setState({ userinfo: JSON.stringify(responseJson) })
      })
      .done()
@@ -46,7 +58,6 @@ export default class PizzaTranslator extends Component {
    render() {
      return (
        <View style={styles.container}>
-
         <View style={styles.textInput}>
           <TextInput
             style={{height: 40}}
@@ -57,6 +68,7 @@ export default class PizzaTranslator extends Component {
 
         <View style={styles.textInput}>
           <TextInput
+            secureTextEntry={true}
             style={{height: 40}}
             placeholder="password"
             onChangeText={(text) => this.setState({ password: text })}
@@ -91,6 +103,13 @@ export default class PizzaTranslator extends Component {
   _handleBackPress = () => {
     this.props.navigator.push('home')
   };
+  async _onLogin(selectedValue) {
+    try {
+      await AsyncStorage.setItem('@TinkerStorage:token', selectedValue);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+  }
 }
 
 const styles = StyleSheet.create({

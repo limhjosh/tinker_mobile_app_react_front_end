@@ -4,10 +4,13 @@ import {
   Button,
   Clipboard,
   Image,
+  Input,
+  Picker,
   Share,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -17,14 +20,27 @@ import {
   registerRootComponent,
 } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
+import Form from 'react-native-form';
+import {
+  COLOR_BEIGE,
+  COLOR_BLUE,
+  COLOR_BACKGROUND
+} from '../components/styles/common';
+// import { RequestForm } from '../components/forms/request';
 
 @registerRootComponent
 export default class App extends React.Component {
-  state = {
-    image: null,
-    uploading: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      description: '',
+    }
   }
+  // state = {
+  //   image: null,
+  //   uploading: false,
+  //   description: '',
+  // }
 
   render() {
     let { image } = this.state;
@@ -54,6 +70,39 @@ export default class App extends React.Component {
 
         { this._maybeRenderImage() }
         { this._maybeRenderUploadingOverlay() }
+
+        <View style={styles.form}>
+          <Text style={styles.formLabel}>
+            Tell us about your event
+          </Text>
+          <TextInput
+            style={{height: 40}}
+            placeholder="event description"
+            onChangeText={(text) => this.setState({ description: text })}>
+          </TextInput>
+        </View>
+
+        <Form ref="form" style={styles.form}>
+          <View>
+            <View>
+              <TextInput
+                type="TextInput"
+                name="description"
+                placeholder="event description"
+                onChangeText={(text) => this.setState({ description: text })}></TextInput>
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={this._onPressButton.bind(this)}
+              title="Next"
+              color='#fff'
+              style={styles.buttonText}
+            />
+          </View>
+
+        </Form>
 
         <StatusBar barStyle="default" />
       </View>
@@ -118,6 +167,25 @@ export default class App extends React.Component {
     );
   }
 
+  _onPressButton() {
+    console.log("TEST");
+    console.log(this.state.description);
+     fetch('https://thawing-journey-29972.herokuapp.com/users/1/requests', {
+       method: 'POST',
+       headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+       },
+       body: JSON.stringify({ request: { description: this.state.description, user_id: "1" }, request_photo: {image: this.state.image} })
+     })
+     .then((response) => response.json())
+     .then((responseJson) => {
+       console.log(responseJson)
+       this.setState({ userinfo: JSON.stringify(responseJson) })
+     })
+     .done()
+   }
+
   _share = () => {
     Share.share({
       message: this.state.image,
@@ -156,6 +224,7 @@ export default class App extends React.Component {
       if (!pickerResult.cancelled) {
         uploadResponse = await uploadImageAsync(pickerResult.uri);
         uploadResult = await uploadResponse.json();
+        console.log(uploadResult.location)
         this.setState({image: uploadResult.location});
       }
     } catch(e) {
@@ -189,6 +258,17 @@ const styles = StyleSheet.create({
   },
   takePhoto: {
     backgroundColor: COLOR_BLUE,
+  },
+  form: {
+    margin: 10,
+  },
+  buttonContainer: {
+    margin: 10,
+    flexDirection: 'row',
+    backgroundColor: COLOR_BLUE,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })
 
