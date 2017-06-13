@@ -11,7 +11,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
+import {
+  COLOR_BEIGE,
+  COLOR_BLUE,
+  COLOR_BACKGROUND,
+} from '../components/styles/common'
 
 export default class PizzaTranslator extends Component {
   constructor(props) {
@@ -114,11 +118,12 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    justifyContent: 'center',
-   margin: 15
+   backgroundColor: COLOR_BACKGROUND,
   },
   textInput: {
     borderBottomColor: COLOR_BEIGE,
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
+    margin: 15,
   },
   buttonContainer: {
     margin: 30,

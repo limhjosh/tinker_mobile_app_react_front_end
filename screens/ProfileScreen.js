@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  Text,
-  TextInput,
-  View,
-  Button,
-  Alert,
   StyleSheet,
-  AlertIOS
+  Text,
+  View,
 } from 'react-native';
-import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
-import { GlobalState } from '../main.js'
+import {
+  COLOR_BEIGE,
+  COLOR_BLUE,
+  COLOR_BACKGROUND
+} from '../components/styles/common'
+import { GlobalState } from '../global.js'
 
 export default class ProfileScreen extends Component {
   constructor(props) {
-    console.log("global cache", GlobalState.cache)
     super(props);
     this.state = {
       username: '',
@@ -25,7 +24,7 @@ export default class ProfileScreen extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': GlobalState.cache.auth_token
+        'Authorization': GlobalState.cache.user_id,
       }
     })
     .then((response) => {console.log(response);return response.json()})
@@ -40,7 +39,7 @@ export default class ProfileScreen extends Component {
      return (
        <View style={styles.container}>
         <View style={styles.usernameContainer}>
-          <Text style={styles.nameText}>
+          <Text style={styles.usernameText}>
             {this.state.username}
           </Text>
         </View>
@@ -63,6 +62,15 @@ const styles = StyleSheet.create({
   },
   nameText: {
     padding: 10,
-    fontSize: 20
+    fontSize: 20,
   },
+  usernameContainer: {
+    marginTop: 10,
+    top: 2,
+    alignItems: 'center',
+  },
+  usernameText: {
+    top: 1,
+    alignItems: 'flex-start',
+  }
 })

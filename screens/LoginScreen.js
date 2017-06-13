@@ -11,10 +11,12 @@ import {
   AlertIOS,
   TouchableOpacity,
 } from 'react-native';
-import { COLOR_BEIGE, COLOR_BLUE } from '../components/styles/common'
-import { AuthAsync } from '../utilities/authAsync'
-import { GlobalState } from '../main.js'
-
+import {
+  COLOR_BEIGE,
+  COLOR_BLUE,
+  COLOR_BACKGROUND,
+} from '../components/styles/common'
+import { GlobalState } from '../global.js'
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -32,7 +34,6 @@ export default class LoginScreen extends Component {
        headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json',
-        //  'auth_token':
        },
        body: JSON.stringify({ user: {
          username: this.state.username,
@@ -41,15 +42,8 @@ export default class LoginScreen extends Component {
      })
      .then((response) => response.json())
      .then((responseJson) => {
-       console.log("response",responseJson)
-
        GlobalState.cache.auth_token = responseJson.auth_token
        GlobalState.cache.user_id = responseJson.id
-
-       console.log('Global', GlobalState.cache)
-
-       this._onLogin(responseJson.auth_token)
-
        this.setState({ userinfo: JSON.stringify(responseJson) })
      })
      .done()
@@ -103,24 +97,18 @@ export default class LoginScreen extends Component {
   _handleBackPress = () => {
     this.props.navigator.push('home')
   };
-  async _onLogin(selectedValue) {
-    try {
-      await AsyncStorage.setItem('@TinkerStorage:token', selectedValue);
-    } catch (error) {
-      console.log('AsyncStorage error: ' + error.message);
-    }
-  }
 }
 
 const styles = StyleSheet.create({
   container: {
    flex: 1,
    justifyContent: 'center',
-   margin: 15
+   backgroundColor: COLOR_BACKGROUND,
   },
   textInput: {
     borderBottomColor: COLOR_BEIGE,
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
+    margin: 15,
   },
   buttonContainer: {
     margin: 20
