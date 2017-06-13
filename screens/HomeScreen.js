@@ -8,9 +8,19 @@ import {
   Text,
   TouchableOpacity,
   View,
+  AppRegistry,
 } from 'react-native';
-
+import {
+  ImagePicker
+} from 'expo';
+import {
+  createRouter,
+  NavigationProvider,
+  StackNavigation,
+} from '@expo/ex-navigation'
 import { MonoText } from '../components/StyledText';
+import { Ionicons } from '@expo/vector-icons';
+import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 
 export default class HomeScreen extends React.Component {
   static route = {
@@ -18,190 +28,94 @@ export default class HomeScreen extends React.Component {
       visible: false,
     },
   };
+  state = {
+    image: null
+  };
 
   render() {
+    let { image } = this.state;
+
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
 
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../assets/images/expo-wordmark.png')}
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>
-              Get started by opening
-            </Text>
-
-            <View
-              style={[
-                styles.codeHighlightContainer,
-                styles.homeScreenFilename,
-              ]}>
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>
-              navigation/RootNavigation.js
-            </MonoText>
-          </View>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../assets/images/tinker.png')}
+            style={styles.logoImage}
+          />
         </View>
+
+        <View style={styles.linkContainer}>
+          <TouchableOpacity
+            onPress={this._handleLoginPress}
+            style={[styles.loginLink, styles.link]}>
+            <Ionicons name="ios-log-in" size={32} color="#fff" />
+            <Text style={styles.linkText}>
+              Log in
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.linkContainer}>
+          <TouchableOpacity
+            onPress={this._handleSignUpPress}
+            style={[styles.link, styles.signUpLink]}>
+            <Ionicons name="ios-create-outline" size={32} color="#fff" />
+            <Text style={styles.linkText}>
+              Sign up
+            </Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     );
   }
 
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will run slightly slower but
-          you have access to useful development tools. {learnMoreButton}.
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/development-mode'
-    );
+  _handleSignUpPress = () => {
+    this.props.navigator.push('signUp')
   };
 
-  _handleHelpPress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
+  _handleLoginPress = () => {
+    this.props.navigator.push('login')
   };
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  contentContainer: {
     paddingTop: 80,
+    backgroundColor: COLOR_BACKGROUND,
   },
-  welcomeContainer: {
+  logoContainer: {
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
   },
-  welcomeImage: {
-    width: 140,
-    height: 38,
+  logoImage: {
+    width: 400,
+    height: 200,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
   },
-  getStartedContainer: {
+  link: {
+    padding: 10,
+    paddingVertical: 30,
+    width: '100%',
+    flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 50,
+    justifyContent: 'center',
   },
-  homeScreenFilename: {
-    marginVertical: 7,
+  loginLink: {
+    backgroundColor: COLOR_BEIGE,
   },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
+  signUpLink: {
+    backgroundColor: COLOR_BLUE,
   },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 23,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+  linkText: {
+    fontSize: 20,
+    color: '#fff',
+    marginLeft: 5,
   },
 });

@@ -1,13 +1,17 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Notifications } from 'expo';
+import {
+  StyleSheet,
+  View } from 'react-native';
+import {
+  Notifications,
+  ImagePicker
+} from 'expo';
 import {
   StackNavigation,
   TabNavigation,
   TabNavigationItem,
 } from '@expo/ex-navigation';
-import { FontAwesome } from '@expo/vector-icons';
-
+import { FontAwesome, Ionicons, Entypo } from '@expo/vector-icons';
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync
@@ -21,26 +25,44 @@ export default class RootNavigation extends React.Component {
   componentWillUnmount() {
     this._notificationSubscription && this._notificationSubscription.remove();
   }
+  state = {
+    image: null,
+    auth_token: '',
+  };
 
   render() {
+    let { image } = this.state;
+
     return (
-      <TabNavigation tabBarHeight={56} initialTab="home">
+      <TabNavigation tabBarHeight={56} initialTab="home" tabBarStyle={{ backgroundColor: '#fbf6ef' }}>
+        <TabNavigationItem
+          id="camera"
+          renderIcon={isSelected => this._renderIcon('ios-camera-outline', isSelected)}>
+          <StackNavigation initialRoute="camera" />
+        </TabNavigationItem>
+
         <TabNavigationItem
           id="home"
-          renderIcon={isSelected => this._renderIcon('home', isSelected)}>
+          renderIcon={isSelected => this._renderIcon('ios-home-outline', isSelected)}>
           <StackNavigation initialRoute="home" />
         </TabNavigationItem>
 
         <TabNavigationItem
-          id="links"
-          renderIcon={isSelected => this._renderIcon('book', isSelected)}>
-          <StackNavigation initialRoute="links" />
+          id="explore"
+          renderIcon={isSelected => this._renderIcon('ios-contacts-outline', isSelected)}>
+          <StackNavigation initialRoute="explore" />
         </TabNavigationItem>
 
         <TabNavigationItem
-          id="settings"
-          renderIcon={isSelected => this._renderIcon('cog', isSelected)}>
-          <StackNavigation initialRoute="settings" />
+          id="notification"
+          renderIcon={isSelected => this._renderIcon('ios-notifications-outline', isSelected)}>
+          <StackNavigation initialRoute="notifications" />
+        </TabNavigationItem>
+
+        <TabNavigationItem
+          id="profile"
+          renderIcon={isSelected => this._renderIcon('ios-person-outline', isSelected)}>
+          <StackNavigation initialRoute="profile" />
         </TabNavigationItem>
       </TabNavigation>
     );
@@ -48,7 +70,7 @@ export default class RootNavigation extends React.Component {
 
   _renderIcon(name, isSelected) {
     return (
-      <FontAwesome
+      <Ionicons
         name={name}
         size={32}
         color={isSelected ? Colors.tabIconSelected : Colors.tabIconDefault}
@@ -80,7 +102,7 @@ export default class RootNavigation extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f7edde',
   },
   selectedTab: {
     color: Colors.tabIconSelected,
