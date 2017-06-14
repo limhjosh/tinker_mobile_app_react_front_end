@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage,
+  Alert,
   AppRegistry,
+  AsyncStorage,
+  Button,
+  StyleSheet,
   Text,
   TextInput,
-  View,
-  Button,
-  Alert,
-  StyleSheet,
-  AlertIOS,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {
   COLOR_BEIGE,
@@ -45,6 +44,12 @@ export default class LoginScreen extends Component {
        GlobalState.cache.auth_token = responseJson.auth_token
        GlobalState.cache.user_id = responseJson.id
        this.setState({ userinfo: JSON.stringify(responseJson) })
+       if(GlobalState.cache.auth_token) {
+         this.props.navigator.push('camera');
+       }
+       else {
+         alert('Sorry, credentials do not match :(');
+       }
      })
      .done()
    }
@@ -76,10 +81,6 @@ export default class LoginScreen extends Component {
             color='#fff'
           />
         </View>
-
-        <Text style={{padding: 10, fontSize: 22}}>
-          {this.state.userinfo}
-        </Text>
 
         <View style={styles.linkContainer}>
           <TouchableOpacity

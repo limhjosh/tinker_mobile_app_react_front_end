@@ -70,7 +70,7 @@ export default class App extends React.Component {
             </Text>
             <View style={{width: '100%'}}>
               <TextInput
-                style={{height: 50, margin: 10, fontSize: 16}}
+                style={{height: 80, margin: 10, fontSize: 16}}
                 placeholder="event description"
                 multiline={true}
                 onChangeText={(text) => this.setState({ description: text })}>
@@ -117,7 +117,7 @@ export default class App extends React.Component {
 
     return (
       <View style={{
-        marginTop: 15,
+        marginTop: 10,
         width: 250,
         borderRadius: 3,
         elevation: 2,
