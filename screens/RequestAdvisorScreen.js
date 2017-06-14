@@ -52,6 +52,14 @@ export default class RequestAdvisor extends Component {
      return (
        <View style={styles.container}>
 
+        <View style={{alignItems: 'center'}}>
+          <Image
+          style={{width: 200, height: 200, alignItems: 'center', justifyContent: 'center', borderRadius: 20}}
+            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+          />
+        </View>
+
+
         <View style={styles.viewContainer}>
           <Text style={styles.description}>
             {this.state.description}
