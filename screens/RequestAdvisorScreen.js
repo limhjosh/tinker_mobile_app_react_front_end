@@ -34,10 +34,6 @@ export default class RequestAdvisor extends Component {
     })
     .then((response) => {console.log('this is the fetch response', response);return response.json()})
     .then((responseJson) => {
-      console.log('request id')
-      console.log(responseJson.request.id)
-      console.log('image')
-      console.log(responseJson.request.request_photos[0].image)
       this.setState({
         request_id: responseJson.request.id,
         description: responseJson.request.description,
@@ -49,6 +45,7 @@ export default class RequestAdvisor extends Component {
   }
 
    render() {
+     console.log('this is the Advisors array', this.state.arrayOfAdvisors);
      return (
        <View style={styles.container}>
 
@@ -73,12 +70,15 @@ export default class RequestAdvisor extends Component {
         </View>
 
         <View>
-          <ScrollView>
+          <ScrollView style={{height: 200}}>
             {this.state.arrayOfUsers.map(userInfo => {
               return (
                 <TouchableHighlight
-                  onPress={this._advisorPress}
+                  onPress={() => {
+                    this.setState({arrayOfAdvisors: this.state.arrayOfAdvisors.concat([userInfo])});
+                  }}
                   key={userInfo.id}
+                  underlayColor="#ffff00"
                   style={[styles.loginLink, styles.link]}>
                     <Text key={userInfo.id}>{userInfo.username}</Text>
                 </TouchableHighlight>
@@ -87,10 +87,24 @@ export default class RequestAdvisor extends Component {
           </ScrollView>
         </View>
 
+        <View style={styles.viewContainer}>
+          <Text style={styles.title}>
+            Requesting advice from:
+          </Text>
+        </View>
+
+        <View>
+          {this.state.arrayOfAdvisors.map(userInfo => {
+            return (
+              <Text key={userInfo.id}>{userInfo.username}</Text>
+            )
+          })}
+        </View>
+
         <View style={styles.buttonContainer}>
           <Button
             onPress={this._submitButton.bind(this)}
-            title="Submit"
+            title="Send Request"
             color="#000"
           />
         </View>
@@ -98,9 +112,6 @@ export default class RequestAdvisor extends Component {
       </View>
     );
   }
-  _advisorPress = () => {
-    console.log('advisor button pressed')
-  };
   _submitButton = () => {
 
   };
@@ -114,6 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     margin: 5,
+    width: '100%'
   },
   title: {
     padding: 10,
