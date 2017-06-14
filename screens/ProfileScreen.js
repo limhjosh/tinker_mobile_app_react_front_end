@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  Image,
   StyleSheet,
   Text,
   View,
@@ -24,7 +25,7 @@ export default class ProfileScreen extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': GlobalState.cache.user_id,
+        'Authorization': GlobalState.cache.auth_token,
       }
     })
     .then((response) => {console.log(response);return response.json()})
@@ -38,16 +39,25 @@ export default class ProfileScreen extends Component {
    render() {
      return (
        <View style={styles.container}>
-        <View style={styles.usernameContainer}>
-          <Text style={styles.usernameText}>
-            {this.state.username}
-          </Text>
-        </View>
+         <View style={styles.logoContainer}>
+           <Image
+             source={require('../assets/images/tinker.png')}
+             style={styles.logoImage}
+           />
+         </View>
 
-        <View style={styles.emailContainer}>
-          <Text style={styles.nameText}>
-            {this.state.email}
-          </Text>
+        <View style={styles.userinfo}>
+          <View style={[styles.userContainer,styles.usernameContainer]}>
+            <Text style={styles.usernameText}>
+              {this.state.username}
+            </Text>
+          </View>
+
+          <View style={[styles.userContainer,styles.emailContainer]}>
+            <Text style={styles.emailText}>
+              {this.state.email}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -59,18 +69,54 @@ const styles = StyleSheet.create({
    flex: 1,
    justifyContent: 'center',
    backgroundColor: COLOR_BACKGROUND,
+   alignItems: 'center',
   },
   nameText: {
     padding: 10,
     fontSize: 20,
   },
-  usernameContainer: {
+  emailText: {
+    fontSize: 16,
+  },
+  logoContainer: {
+    alignItems: 'center',
     marginTop: 10,
-    top: 2,
+    marginBottom: 20,
+  },
+  logoImage: {
+    width: 400,
+    height: 200,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: -10,
+  },
+  userContainer: {
+    paddingTop: 10,
+    paddingBottom: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 10,
+  },
+  usernameContainer: {
+    backgroundColor: COLOR_BLUE,
+    width: 300,
+    // marginBottom: 500,
+    position: 'absolute',
+    top: -300,
     alignItems: 'center',
   },
   usernameText: {
     top: 1,
     alignItems: 'flex-start',
+    fontSize: 30,
+  },
+  emailContainer: {
+    backgroundColor: COLOR_BEIGE,
+    width: 300,
+    // marginBottom: ,
+    alignItems: 'center',
+  },
+  userinfo: {
+    top: '1%',
   }
 })

@@ -175,6 +175,7 @@ export default class App extends React.Component {
        this.setState({ userinfo: JSON.stringify(responseJson) })
      })
      .done()
+     this.props.navigator.push('advisor')
    }
 
   _share = () => {
