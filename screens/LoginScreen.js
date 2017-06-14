@@ -44,6 +44,7 @@ export default class LoginScreen extends Component {
        GlobalState.cache.auth_token = responseJson.auth_token
        GlobalState.cache.user_id = responseJson.id
        this.setState({ userinfo: JSON.stringify(responseJson) })
+       console.log("response Json login", responseJson)
        if(GlobalState.cache.auth_token) {
          this.props.navigator.push('camera');
        }

@@ -1,23 +1,28 @@
 import React, { Component } from 'react';
 import {
-  ListView,
-  Text,
-  View,
   Alert,
+  Button,
+  Image,
+  ListView,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  View,
   StyleSheet,
 } from 'react-native';
 import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 import { GlobalState } from '../global.js'
 
 export default class Notifications extends Component {
-  constructor() {
-    super();
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  constructor(props) {
+    super(props);
+    // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    // console.log("global state", GlobalState.cache)
     this.state = {
-      dataSource: ds.cloneWithRows(['new row 1', 'new row 2', 'new row 3']),
-      test: ''
+      requests: [],
+      // request_photos: [],
     };
-    fetch(`http://localhost:3000/users/1/requests/1`, {
+    fetch(`http://localhost:3000/requests/advise`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -25,11 +30,48 @@ export default class Notifications extends Component {
         'Authorization': GlobalState.cache.auth_token,
       }
     })
-    .then((response) => {console.log(response);return response.json()})
+    .then((response) => {return response.json()})
     .then((responseJson) => {
-      this.setState({ test: responseJson.users })
+      // console.log("json response",responseJson[0].request_photos[0]);
+      this.setState({
+        requests: responseJson,
+        // description: responseJson[0].description,
+        // image: responseJson[0].request_photos[0]
+      })
+      // console.log("this is description state", this.state.description)
     })
     .done()
+  }
+
+
+  renderRequests() {
+    var self = this
+    return this.state.requests.map( (request) => {
+      return (
+        <View key={request.id}>
+        <View style={styles.viewContainer}>
+          <Text style={styles.description}>
+            {request.user.username}: {request.description}
+          </Text>
+        </View>
+
+        <View style={{alignItems: 'center'}}>
+          <Image
+          style={{width: 100, height: 100, alignItems: 'center', justifyContent: 'center', borderRadius: 20}}
+            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <Button
+            onPress={(request) => {self._submitButton(request).bind(self)}}
+            title="Give Advice"
+            color="#000"
+          />
+         </View>
+         </View>
+        )
+    } )
   }
 
    render() {
@@ -40,22 +82,27 @@ export default class Notifications extends Component {
           Notifications
         </Text>
 
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
-        />
+        {this.renderRequests()}
+
 
       </View>
     );
   }
+
+   _submitButton = () => {
+    this.props.navigator.push('request')
+  };
+
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  viewContainer: {
     justifyContent: 'center',
-    backgroundColor: COLOR_BACKGROUND,
-    marginTop: 40,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 5,
   },
   title: {
     padding: 10,
@@ -65,4 +112,27 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: COLOR_BACKGROUND,
+  },
+  link: {
+    padding: 10,
+    paddingVertical: 30,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLOR_BLUE,
+    marginTop: 2,
+  },
+  buttonContainer: {
+    marginTop: 30,
+    flexDirection: 'row',
+    backgroundColor: COLOR_BLUE,
+    justifyContent: 'center',
+    width: '100%',
+  },
 })
+
