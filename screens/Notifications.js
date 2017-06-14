@@ -27,22 +27,17 @@ export default class Notifications extends Component {
     })
     .then((response) => {console.log(response);return response.json()})
     .then((responseJson) => {
-      console.log(responseJson)
       this.setState({ test: responseJson.users })
-      console.log("TEST TEST TEST TEST TEST")
-      console.log(responseJson.users)
-      console.log(this.state.test)
     })
     .done()
   }
-
 
    render() {
      return (
        <View style={styles.container}>
 
-        <Text style={{padding: 10, fontSize: 22, margin: 15}}>
-          you have no notifications
+        <Text style={styles.title}>
+          Notifications
         </Text>
 
         <ListView
@@ -60,5 +55,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: COLOR_BACKGROUND,
+    marginTop: 40,
+  },
+  title: {
+    padding: 10,
+    fontSize: 22,
+    marginBottom: 15,
+    backgroundColor: COLOR_BEIGE,
+    width: '100%',
+    textAlign: 'center',
   },
 })

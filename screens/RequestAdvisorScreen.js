@@ -4,13 +4,18 @@ import {
   Button,
   Image,
   ListView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
   ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableHighlight,
+  View,
 } from 'react-native';
-import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
+import {
+  COLOR_BEIGE,
+  COLOR_BLUE,
+  COLOR_BACKGROUND
+} from '../components/styles/common'
 import { GlobalState } from '../global.js'
 
 export default class RequestAdvisor extends Component {
@@ -19,6 +24,7 @@ export default class RequestAdvisor extends Component {
     this.state = {
       request_id: '',
       arrayOfUsers: [],
+      arrayOfAdvisors: [],
     };
     fetch(`http://localhost:3000/users/1/requests/1`, {
       method: 'GET',
@@ -32,9 +38,9 @@ export default class RequestAdvisor extends Component {
     .then((responseJson) => {
       this.setState({
         description: responseJson.request.description,
-        image: responseJson.request.request_photos[0].image
+        image: responseJson.request.request_photos[0].image,
+        arrayOfUsers: responseJson.users
       })
-      this.setState({ arrayOfUsers: responseJson.users})
     })
     .done()
   }
@@ -66,12 +72,12 @@ export default class RequestAdvisor extends Component {
           <ScrollView>
             {this.state.arrayOfUsers.map(userInfo => {
               return (
-                <TouchableOpacity
+                <TouchableHighlight
                   onPress={this._advisorPress}
                   key={userInfo.id}
                   style={[styles.loginLink, styles.link]}>
                     <Text key={userInfo.id}>{userInfo.username}</Text>
-                </TouchableOpacity>
+                </TouchableHighlight>
               );
             })}
           </ScrollView>
