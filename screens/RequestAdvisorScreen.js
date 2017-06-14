@@ -6,6 +6,7 @@ import {
   ListView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
@@ -58,7 +59,13 @@ export default class RequestAdvisor extends Component {
           <View>
             {this.state.arrayOfUsers.map(userInfo => {
               return (
-                <Text key={userInfo.id}>{userInfo.username}</Text>
+                // <Text key={userInfo.id}>{userInfo.username}</Text>
+                <TouchableOpacity
+                  onPress={this._handlePress}
+                  key={userInfo.id}
+                  style={[styles.loginLink, styles.link]}>
+                    <Text key={userInfo.id}>{userInfo.username}</Text>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -68,6 +75,9 @@ export default class RequestAdvisor extends Component {
       </View>
     );
   }
+  _handlePress = () => {
+
+  };
 }
 
 const styles = StyleSheet.create({
@@ -75,5 +85,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: COLOR_BACKGROUND,
+  },
+  link: {
+    padding: 10,
+    paddingVertical: 30,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLOR_BLUE,
   },
 })
