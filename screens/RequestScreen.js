@@ -12,15 +12,15 @@ import {
   COLOR_BACKGROUND
 } from '../components/styles/common'
 import { GlobalState } from '../global.js'
-
 export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      email: '',
+      description: '',
+      photoImage: '',
+      comments:[],
     };
-    fetch(`http://localhost:3000/users/${GlobalState.cache.user_id}`, {
+    fetch(`http://localhost:3000/users/${GlobalState.cache.user_id}/requests/1`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -31,39 +31,42 @@ export default class ProfileScreen extends Component {
     .then((response) => {console.log(response);return response.json()})
     .then((responseJson) => {
       console.log(responseJson)
-      this.setState({ username: responseJson.username, email: responseJson.email })
+      this.setState({ description: responseJson.request.description, photoImage: responseJson.request.request_photos[0].image, comments: responseJson.request.comments })
     })
     .done()
   }
-
    render() {
      return (
        <View style={styles.container}>
          <View style={styles.logoContainer}>
            <Image
-             source={require('../assets/images/tinker.png')}
+             source={require(this.state.photoImage)}
              style={styles.logoImage}
            />
          </View>
-
         <View style={styles.userinfo}>
           <View style={[styles.userContainer,styles.usernameContainer]}>
             <Text style={styles.usernameText}>
               {this.state.username}
             </Text>
           </View>
-
           <View style={[styles.userContainer,styles.emailContainer]}>
             <Text style={styles.emailText}>
-              {this.state.email}
+              {this.state.description}
             </Text>
           </View>
+        </View>
+        <View>
+          {
+            this.state.comments.map((comment) => {
+              return (<Text>{comment.body}</Text>)
+            });
+          }
         </View>
       </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
    flex: 1,

@@ -36,11 +36,6 @@ export default class App extends React.Component {
       description: '',
     }
   }
-  // state = {
-  //   image: null,
-  //   uploading: false,
-  //   description: '',
-  // }
 
   render() {
     let { image } = this.state;
@@ -68,19 +63,19 @@ export default class App extends React.Component {
           />
         </View>
 
-        { this._maybeRenderImage() }
-        { this._maybeRenderUploadingOverlay() }
-
         <Form ref="form" style={styles.form}>
           <View style={styles.form}>
-            <Text style={styles.formLabel}>
+            <Text>
               Tell us about your event
             </Text>
-            <TextInput
-              style={{height: 40}}
-              placeholder="event description"
-              onChangeText={(text) => this.setState({ description: text })}>
-            </TextInput>
+            <View style={{width: '100%'}}>
+              <TextInput
+                style={{height: 80, margin: 10, fontSize: 16}}
+                placeholder="event description"
+                multiline={true}
+                onChangeText={(text) => this.setState({ description: text })}>
+              </TextInput>
+            </View>
           </View>
 
           <View style={styles.buttonContainer}>
@@ -91,10 +86,11 @@ export default class App extends React.Component {
               style={styles.buttonText}
             />
           </View>
-
         </Form>
 
-        <StatusBar barStyle="default" />
+        { this._maybeRenderImage() }
+        { this._maybeRenderUploadingOverlay() }
+
       </View>
     );
   }
@@ -121,7 +117,7 @@ export default class App extends React.Component {
 
     return (
       <View style={{
-        marginTop: 30,
+        marginTop: 10,
         width: 250,
         borderRadius: 3,
         elevation: 2,
@@ -137,29 +133,11 @@ export default class App extends React.Component {
           />
         </View>
 
-        <Text
-          onPress={this._copyToClipboard}
-          onLongPress={this._share}
-          style={{paddingVertical: 10, paddingHorizontal: 10}}>
-          {image}
-        </Text>
       </View>
     );
   }
 
-  _renderIcon(name, isSelected) {
-    return (
-      <Ionicons
-        name={name}
-        size={32}
-        color={isSelected ? Colors.tabIconSelected : Colors.tabIconDefault}
-      />
-    );
-  }
-
   _onPressButton() {
-    console.log("TEST");
-    console.log(this.state.description);
      fetch('http://localhost:3000/users/1/requests', {
        method: 'POST',
        headers: {
@@ -175,20 +153,8 @@ export default class App extends React.Component {
        this.setState({ userinfo: JSON.stringify(responseJson) })
      })
      .done()
+     this.props.navigator.push('advisor')
    }
-
-  _share = () => {
-    Share.share({
-      message: this.state.image,
-      title: 'Check out this photo',
-      url: this.state.image,
-    });
-  }
-
-  _copyToClipboard = () => {
-    Clipboard.setString(this.state.image);
-    alert('Copied image URL to clipboard');
-  }
 
   _takePhoto = async () => {
     let pickerResult = await ImagePicker.launchCameraAsync({
@@ -252,6 +218,7 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 10,
+    width: '100%',
   },
   buttonContainer: {
     margin: 10,
@@ -265,15 +232,6 @@ const styles = StyleSheet.create({
 
 async function uploadImageAsync(uri) {
   let apiUrl = 'https://file-upload-example-backend-dkhqoilqqn.now.sh/upload';
-
-  // Note:
-  // Uncomment this if you want to experiment with local server
-  //
-  // if (Constants.isDevice) {
-  //   apiUrl = `https://your-ngrok-subdomain.ngrok.io/upload`;
-  // } else {
-  //   apiUrl = `http://localhost:3000/upload`
-  // }
 
   let uriParts = uri.split('.');
   let fileType = uri[uri.length - 1];

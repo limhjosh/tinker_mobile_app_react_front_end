@@ -7,7 +7,9 @@ import PizzaTranslator from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import Notifications from '../screens/Notifications';
 import Explore from '../screens/ExploreScreen';
+import RequestAdvisor from '../screens/RequestAdvisorScreen';
 import RootNavigation from './RootNavigation';
+// import RequestScreen from '../screens/RequestScreen';
 
 export default createRouter(() => ({
   home: () => HomeScreen,
@@ -17,5 +19,7 @@ export default createRouter(() => ({
   login: () => LoginScreen,
   notifications: () => Notifications,
   explore: () => Explore,
+  advisor: () => RequestAdvisor,
   rootNavigation: () => RootNavigation,
+  // request: () => RequestScreen,
 }));
