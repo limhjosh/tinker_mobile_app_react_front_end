@@ -1,0 +1,6 @@
+<View style={{alignItems: 'center'}}>
+  <Image
+    style={{width: 200, height: 200, alignItems: 'center', justifyContent: 'center'}}
+    source={{uri: this.state.image}}
+  />
+</View>

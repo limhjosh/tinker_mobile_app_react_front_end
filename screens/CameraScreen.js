@@ -1,13 +1,7 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   Button,
-  Clipboard,
   Image,
-  Input,
-  Picker,
-  Share,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -112,7 +106,7 @@ export default class App extends React.Component {
   }
 
   _onPressButton() {
-     fetch('http://localhost:3000/users/1/requests', {
+     fetch(`http://localhost:3000/users/1/requests`, {
        method: 'POST',
        headers: {
          'Accept': 'application/json',
@@ -121,7 +115,8 @@ export default class App extends React.Component {
        },
        body: JSON.stringify({ request: { description: this.state.description, user_id: "1" }, request_photo: {image: this.state.image} })
      })
-     .then((response) => response.json())
+     .catch((error) => {console.warn('this is your error message', error);})
+     .then((response) => {console.log('test 0', response);response.json()})
      .then((responseJson) => {
        console.log('test 1')
        console.log(responseJson)
@@ -148,6 +143,7 @@ export default class App extends React.Component {
     if (!pickerResult.cancelled) {
       this.setState({ image: pickerResult.uri });
     }
+    console.log('this is the pickerResult uri', pickerResult.uri )
   }
 }
 
