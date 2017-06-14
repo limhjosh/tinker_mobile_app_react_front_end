@@ -69,7 +69,7 @@ export default class LoginScreen extends Component {
           />
         </View>
 
-        <View style={styles.ButtonContainer}>
+        <View style={styles.buttonContainer}>
           <Button
             onPress={this._onPressButton.bind(this)}
             title="Login"
@@ -111,9 +111,6 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   buttonContainer: {
-    margin: 20
-  },
-  ButtonContainer: {
     margin: 30,
     flexDirection: 'row',
     backgroundColor: COLOR_BLUE,

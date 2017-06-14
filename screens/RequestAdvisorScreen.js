@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 import { GlobalState } from '../global.js'
@@ -42,32 +43,49 @@ export default class RequestAdvisor extends Component {
      return (
        <View style={styles.container}>
 
-        <Text style={{padding: 10, fontSize: 22, margin: 15}}>
-          Pick Advisors:
-        </Text>
-
         <View style={[styles.userContainer,styles.usernameContainer]}>
-          <Text style={styles.usernameText}>
-            {this.state.description}
-          </Text>
 
-          <Image
-          style={{width: 50, height: 50}}
-            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
-          />
+          <View style={{alignItems: 'center'}}>
+            <Image
+            style={{width: 200, height: 200, alignItems: 'center', justifyContent: 'center'}}
+              source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+            />
+          </View>
+
+          <View style={styles.viewContainer}>
+            <Text style={styles.description}>
+              {this.state.description}
+            </Text>
+          </View>
+
+          <View style={styles.viewContainer}>
+            <Text style={styles.title}>
+              Pick Advisors
+            </Text>
+          </View>
 
           <View>
-            {this.state.arrayOfUsers.map(userInfo => {
-              return (
-                // <Text key={userInfo.id}>{userInfo.username}</Text>
-                <TouchableOpacity
-                  onPress={this._handlePress}
-                  key={userInfo.id}
-                  style={[styles.loginLink, styles.link]}>
-                    <Text key={userInfo.id}>{userInfo.username}</Text>
-                </TouchableOpacity>
-              );
-            })}
+            <ScrollView>
+              {this.state.arrayOfUsers.map(userInfo => {
+                return (
+                  // <Text key={userInfo.id}>{userInfo.username}</Text>
+                  <TouchableOpacity
+                    onPress={this._advisorPress}
+                    key={userInfo.id}
+                    style={[styles.loginLink, styles.link]}>
+                      <Text key={userInfo.id}>{userInfo.username}</Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+
+          <View style={styles.ButtonContainer}>
+            <Button
+              onPress={this._nextPress.bind(this)}
+              title="Submit"
+              color='#fff'
+            />
           </View>
 
         </View>
@@ -75,12 +93,31 @@ export default class RequestAdvisor extends Component {
       </View>
     );
   }
-  _handlePress = () => {
+  _advisorPress = () => {
+  };
+
+  _nextPress = () => {
 
   };
 }
 
 const styles = StyleSheet.create({
+  viewContainer: {
+    justifyContent: 'center',
+  },
+  description: {
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 5,
+  },
+  title: {
+    padding: 10,
+    fontSize: 22,
+    marginBottom: 15,
+    backgroundColor: COLOR_BEIGE,
+    width: '100%',
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -94,5 +131,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLOR_BLUE,
+    marginTop: 2,
+  },
+  buttonContainer: {
+    margin: 30,
+    flexDirection: 'row',
+    backgroundColor: COLOR_BLUE,
+    justifyContent: 'center'
   },
 })
