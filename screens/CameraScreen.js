@@ -1,13 +1,7 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   Button,
-  Clipboard,
   Image,
-  Input,
-  Picker,
-  Share,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -89,24 +83,9 @@ export default class App extends React.Component {
         </Form>
 
         { this._maybeRenderImage() }
-        { this._maybeRenderUploadingOverlay() }
 
       </View>
     );
-  }
-
-  _maybeRenderUploadingOverlay = () => {
-    if (this.state.uploading) {
-      return (
-        <View style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.4)', alignItems: 'center', justifyContent: 'center'}]}>
-          <ActivityIndicator
-            color="#fff"
-            animating
-            size="large"
-          />
-        </View>
-      );
-    }
   }
 
   _maybeRenderImage = () => {
@@ -114,31 +93,20 @@ export default class App extends React.Component {
     if (!image) {
       return;
     }
-
     return (
-      <View style={{
-        marginTop: 10,
-        width: 250,
-        borderRadius: 3,
-        elevation: 2,
-        shadowColor: 'rgba(0,0,0,1)',
-        shadowOpacity: 0.2,
-        shadowOffset: {width: 4, height: 4},
-        shadowRadius: 5,
-      }}>
-        <View style={{borderTopRightRadius: 3, borderTopLeftRadius: 3, overflow: 'hidden'}}>
+      <View style={styles.imageContainer}>
+        <View style={styles.imageBorder}>
           <Image
             source={{uri: image}}
             style={{width: 250, height: 250}}
           />
         </View>
-
       </View>
     );
   }
 
   _onPressButton() {
-     fetch('http://localhost:3000/users/1/requests', {
+     fetch(`http://localhost:3000/users/1/requests`, {
        method: 'POST',
        headers: {
          'Accept': 'application/json',
@@ -147,12 +115,15 @@ export default class App extends React.Component {
        },
        body: JSON.stringify({ request: { description: this.state.description, user_id: "1" }, request_photo: {image: this.state.image} })
      })
-     .then((response) => response.json())
+     .catch((error) => {console.warn('this is your error message', error);})
+     .then((response) => {console.log('test 0', response);response.json()})
      .then((responseJson) => {
+       console.log('test 1')
        console.log(responseJson)
        this.setState({ userinfo: JSON.stringify(responseJson) })
      })
      .done()
+     console.log('test 2')
      this.props.navigator.push('advisor')
    }
 
@@ -160,38 +131,19 @@ export default class App extends React.Component {
     let pickerResult = await ImagePicker.launchCameraAsync({
       aspect: [4,3]
     });
-
-    this._handleImagePicked(pickerResult);
+    if (!pickerResult.cancelled) {
+      this.setState({ image: pickerResult.uri });
+    }
   }
 
   _selectPhoto = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       aspect: [4,3]
     });
-
-    this._handleImagePicked(pickerResult);
-  }
-
-  _handleImagePicked = async (pickerResult) => {
-    let uploadResponse, uploadResult;
-
-    try {
-      this.setState({uploading: true});
-
-      if (!pickerResult.cancelled) {
-        uploadResponse = await uploadImageAsync(pickerResult.uri);
-        uploadResult = await uploadResponse.json();
-        console.log(uploadResult.location)
-        this.setState({image: uploadResult.location});
-      }
-    } catch(e) {
-      console.log({uploadResponse});
-      console.log({uploadResult});
-      console.log({e});
-      alert('Upload failed, sorry :(');
-    } finally {
-      this.setState({uploading: false});
+    if (!pickerResult.cancelled) {
+      this.setState({ image: pickerResult.uri });
     }
+    console.log('this is the pickerResult uri', pickerResult.uri )
   }
 }
 
@@ -228,29 +180,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  imageContainer: {
+    marginTop: 10,
+    width: 250,
+    borderRadius: 3,
+    elevation: 2,
+    shadowColor: 'rgba(0,0,0,1)',
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 4, height: 4},
+    shadowRadius: 5,
+  },
+  imageBorder: {
+    borderTopRightRadius: 3,
+    borderTopLeftRadius: 3,
+    overflow: 'hidden',
+  }
 })
-
-async function uploadImageAsync(uri) {
-  let apiUrl = 'https://file-upload-example-backend-dkhqoilqqn.now.sh/upload';
-
-  let uriParts = uri.split('.');
-  let fileType = uri[uri.length - 1];
-
-  let formData = new FormData();
-  formData.append('photo', {
-    uri,
-    name: `photo.${fileType}`,
-    type: `image/${fileType}`,
-  });
-
-  let options = {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-  };
-
-  return fetch(apiUrl, options);
-}

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Alert,
   Button,
   Image,
-  ListView,
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   TouchableHighlight,
   View,
@@ -23,6 +20,7 @@ export default class RequestAdvisor extends Component {
     super(props);
     this.state = {
       request_id: '',
+      description: '',
       arrayOfUsers: [],
       arrayOfAdvisors: [],
     };
@@ -34,12 +32,17 @@ export default class RequestAdvisor extends Component {
         'Authorization': GlobalState.cache.auth_token,
       }
     })
-    .then((response) => {console.log(response);return response.json()})
+    .then((response) => {console.log('this is the fetch response', response);return response.json()})
     .then((responseJson) => {
+      console.log('request id')
+      console.log(responseJson.request.id)
+      console.log('image')
+      console.log(responseJson.request.request_photos[0].image)
       this.setState({
+        request_id: responseJson.request.id,
         description: responseJson.request.description,
         image: responseJson.request.request_photos[0].image,
-        arrayOfUsers: responseJson.users
+        arrayOfUsers: responseJson.users,
       })
     })
     .done()
@@ -55,6 +58,7 @@ export default class RequestAdvisor extends Component {
             source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
           />
         </View>
+
 
         <View style={styles.viewContainer}>
           <Text style={styles.description}>
@@ -95,7 +99,7 @@ export default class RequestAdvisor extends Component {
     );
   }
   _advisorPress = () => {
-
+    console.log('advisor button pressed')
   };
   _submitButton = () => {
 
