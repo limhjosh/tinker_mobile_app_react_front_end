@@ -13,7 +13,7 @@ import {
 import { COLOR_BEIGE, COLOR_BLUE, COLOR_BACKGROUND } from '../components/styles/common'
 import { GlobalState } from '../global.js'
 
-export default class Notifications extends Component {
+export default class RequestIndexScreen extends Component {
   constructor(props) {
     super(props);
     // const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -22,7 +22,7 @@ export default class Notifications extends Component {
       requests: [],
       // request_photos: [],
     };
-    fetch(`http://localhost:3000/requests/advise`, {
+    fetch(`http://localhost:3000/users/${GlobalState.cache.user_id}/requests`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -51,7 +51,7 @@ export default class Notifications extends Component {
         <View key={request.id}>
         <View style={styles.viewContainer}>
           <Text style={styles.description}>
-            {request.user.username}: {request.description}
+            {request.description}
           </Text>
         </View>
 
@@ -64,8 +64,8 @@ export default class Notifications extends Component {
 
         <View style={styles.buttonContainer}>
           <Button
-            onPress={() => {self._submitButton(request)} }
-            title="Give Advice"
+            onPress={() => {self._onPressButton(request)} }
+            title="View"
             color="#000"
           />
          </View>
@@ -89,7 +89,7 @@ export default class Notifications extends Component {
     );
   }
 
-   _submitButton = (request) => {
+   _onPressButton = (request) => {
     this.props.navigator.push("request", { request: request })
   };
 

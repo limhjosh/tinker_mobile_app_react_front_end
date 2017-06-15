@@ -11,7 +11,7 @@ import RequestAdvisor from '../screens/RequestAdvisorScreen';
 import RootNavigation from './RootNavigation';
 import RequestScreen from '../screens/RequestScreen';
 import CommentScreen from '../screens/CommentScreen';
- // import TempRequestScreen from '../screens/TempRequestScreen';
+import RequestIndexScreen from '../screens/RequestIndexScreen'
 
 export default createRouter(() => ({
   home: () => HomeScreen,
@@ -25,6 +25,6 @@ export default createRouter(() => ({
   rootNavigation: () => RootNavigation,
   request: () => RequestScreen,
   comment: () => CommentScreen,
-  // request: () => TempRequestScreen,
+  requestIndex: () => RequestIndexScreen,
 
 }));
