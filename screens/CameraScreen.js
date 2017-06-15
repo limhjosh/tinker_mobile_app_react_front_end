@@ -1,7 +1,13 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   Button,
+  Clipboard,
   Image,
+  Input,
+  Picker,
+  Share,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -28,6 +34,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       description: '',
+      request_id: '',
     }
   }
 
@@ -59,17 +66,14 @@ export default class App extends React.Component {
 
         <Form ref="form" style={styles.form}>
           <View style={styles.form}>
-            <Text>
+            <Text style={styles.formLabel}>
               Tell us about your event
             </Text>
-            <View style={{width: '100%'}}>
-              <TextInput
-                style={{height: 80, margin: 10, fontSize: 16}}
-                placeholder="event description"
-                multiline={true}
-                onChangeText={(text) => this.setState({ description: text })}>
-              </TextInput>
-            </View>
+            <TextInput
+              style={{height: 40}}
+              placeholder="event description"
+              onChangeText={(text) => this.setState({ description: text })}>
+            </TextInput>
           </View>
 
           <View style={styles.buttonContainer}>
@@ -83,9 +87,24 @@ export default class App extends React.Component {
         </Form>
 
         { this._maybeRenderImage() }
+        { this._maybeRenderUploadingOverlay() }
 
       </View>
     );
+  }
+
+  _maybeRenderUploadingOverlay = () => {
+    if (this.state.uploading) {
+      return (
+        <View style={[StyleSheet.absoluteFill, {backgroundColor: 'rgba(0,0,0,0.4)', alignItems: 'center', justifyContent: 'center'}]}>
+          <ActivityIndicator
+            color="#fff"
+            animating
+            size="large"
+          />
+        </View>
+      );
+    }
   }
 
   _maybeRenderImage = () => {
@@ -93,38 +112,47 @@ export default class App extends React.Component {
     if (!image) {
       return;
     }
+
     return (
       <View style={styles.imageContainer}>
-        <View style={styles.imageBorder}>
+        <View style={{borderTopRightRadius: 3, borderTopLeftRadius: 3, overflow: 'hidden'}}>
           <Image
             source={{uri: image}}
             style={{width: 250, height: 250}}
           />
         </View>
+
       </View>
     );
   }
 
+  _renderIcon(name, isSelected) {
+    return (
+      <Ionicons
+        name={name}
+        size={32}
+        color={isSelected ? Colors.tabIconSelected : Colors.tabIconDefault}
+      />
+    );
+  }
+
   _onPressButton() {
-     fetch(`http://localhost:3000/users/1/requests`, {
-       method: 'POST',
+     fetch('http://localhost:3000/requests', {
+       method: 'PUT',
        headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json',
          'Authorization': GlobalState.cache.auth_token,
        },
-       body: JSON.stringify({ request: { description: this.state.description, user_id: "1" }, request_photo: {image: this.state.image} })
+       body: JSON.stringify({ request: { id: this.state.request_id, description: this.state.description, user_id: "1" } })
      })
-     .catch((error) => {console.warn('this is your error message', error);})
-     .then((response) => {console.log('test 0', response);response.json()})
+     .then((response) => response.json())
      .then((responseJson) => {
-       console.log('test 1')
        console.log(responseJson)
        this.setState({ userinfo: JSON.stringify(responseJson) })
+       this.props.navigator.push('advisor', { request: responseJson.request });
      })
      .done()
-     console.log('test 2')
-     this.props.navigator.push('advisor')
    }
 
   _takePhoto = async () => {
@@ -134,6 +162,8 @@ export default class App extends React.Component {
     if (!pickerResult.cancelled) {
       this.setState({ image: pickerResult.uri });
     }
+
+    this._handleImagePicked(pickerResult);
   }
 
   _selectPhoto = async () => {
@@ -143,7 +173,55 @@ export default class App extends React.Component {
     if (!pickerResult.cancelled) {
       this.setState({ image: pickerResult.uri });
     }
-    console.log('this is the pickerResult uri', pickerResult.uri )
+
+    this._handleImagePicked(pickerResult);
+  }
+
+  _handleImagePicked = async (pickerResult) => {
+    let uploadResponse, uploadResult;
+
+    try {
+      this.setState({uploading: true});
+
+      if (!pickerResult.cancelled) {
+        uploadResponse = await this._uploadImageAsync(pickerResult.uri)
+      }
+    } finally {
+      this.setState({uploading: false});
+    }
+  }
+
+  _uploadImageAsync = async (uri) => {
+    let apiUrl = 'http://localhost:3000/request_photo_upload';
+    let self = this
+    console.log(uri)
+    let uriParts = uri.split('.');
+    let fileType = uriParts[uriParts.length - 1];
+
+    let formData = new FormData();
+    formData.append('photo', {
+      uri,
+      name: `photo.${fileType}`,
+      type: `image/${fileType}`,
+    });
+
+    let options = {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'Authorization': GlobalState.cache.auth_token,
+      },
+    };
+
+    fetch(apiUrl, options)
+    .then((response) => {console.log(response, response.id);return response.json()})
+    .then((responseJson) => {
+      console.log('this is the id of the request', responseJson.id);
+      self.setState({request_id: responseJson.id});
+      console.log('this is the request saved in state', self.state.request_id);
+    }).done()
   }
 }
 
@@ -170,7 +248,6 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 10,
-    width: '100%',
   },
   buttonContainer: {
     margin: 10,
@@ -194,5 +271,5 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 3,
     borderTopLeftRadius: 3,
     overflow: 'hidden',
-  }
+  },
 })
