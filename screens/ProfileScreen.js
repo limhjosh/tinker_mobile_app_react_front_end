@@ -41,7 +41,7 @@ export default class ProfileScreen extends Component {
        <View style={styles.container}>
          <View style={styles.logoContainer}>
            <Image
-             source={require('../assets/images/tinker.png')}
+             source={{uri: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Ryan_Gosling_-_Cannes_Film_Festival_-_01.jpg"}}
              style={styles.logoImage}
            />
          </View>
@@ -80,14 +80,13 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20,
   },
   logoImage: {
     width: 400,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 3,
     marginLeft: -10,
   },
   userContainer: {

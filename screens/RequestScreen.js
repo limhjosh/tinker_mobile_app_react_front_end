@@ -12,15 +12,15 @@ import {
   COLOR_BACKGROUND
 } from '../components/styles/common'
 import { GlobalState } from '../global.js'
-export default class RequestScreen extends Component {
+export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      request: this.props.request,
-      comments: []
+      description: '',
+      photoImage: '',
+      comments:[],
     };
-    let request = this.state.request
-    fetch(`http://localhost:3000/users/${request.user_id}/requests/${request.id}`, {
+    fetch(`http://localhost:3000/users/${GlobalState.cache.user_id}/requests/1`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -30,9 +30,8 @@ export default class RequestScreen extends Component {
     })
     .then((response) => {console.log(response);return response.json()})
     .then((responseJson) => {
-      console.log(responseJson.request.comments)
-      this.setState({comments: responseJson.request.comments,
-      })
+      console.log(responseJson)
+      this.setState({ description: responseJson.request.description, photoImage: responseJson.request.request_photos[0].image, comments: responseJson.request.comments })
     })
     .done()
   }
@@ -41,33 +40,32 @@ export default class RequestScreen extends Component {
        <View style={styles.container}>
          <View style={styles.logoContainer}>
            <Image
-             source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+             source={require(this.state.photoImage)}
              style={styles.logoImage}
            />
          </View>
         <View style={styles.userinfo}>
           <View style={[styles.userContainer,styles.usernameContainer]}>
             <Text style={styles.usernameText}>
-              {this.state.request.user.username}
+              {this.state.username}
             </Text>
           </View>
           <View style={[styles.userContainer,styles.emailContainer]}>
             <Text style={styles.emailText}>
-              {this.state.request.description}
+              {this.state.description}
             </Text>
           </View>
         </View>
         <View>
           {
             this.state.comments.map((comment) => {
-              return (<View key={comment.id} style={[styles.userContainer,styles.commentContainer]}><Text>{comment.user.username}: {comment.body}</Text></View>)
-            })
+              return (<Text>{comment.body}</Text>)
+            });
           }
         </View>
       </View>
     );
   }
-
 }
 const styles = StyleSheet.create({
   container: {
@@ -85,16 +83,14 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20,
   },
   logoImage: {
     width: 400,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 3,
     marginLeft: -10,
-    borderRadius: 20,
   },
   userContainer: {
     paddingTop: 10,
@@ -118,12 +114,6 @@ const styles = StyleSheet.create({
   },
   emailContainer: {
     backgroundColor: COLOR_BEIGE,
-    width: 300,
-    // marginBottom: ,
-    alignItems: 'center',
-  },
-  commentContainer: {
-    backgroundColor: COLOR_BLUE,
     width: 300,
     // marginBottom: ,
     alignItems: 'center',

@@ -58,7 +58,7 @@ export default class RequestIndexScreen extends Component {
         <View style={{alignItems: 'center'}}>
           <Image
           style={{width: 100, height: 100, alignItems: 'center', justifyContent: 'center', borderRadius: 20}}
-            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+            source={{uri: "http://cdn3-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-21.jpg"}}
           />
         </View>
 
