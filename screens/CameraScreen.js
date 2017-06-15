@@ -66,12 +66,10 @@ export default class App extends React.Component {
 
         <Form ref="form" style={styles.form}>
           <View style={styles.form}>
-            <Text style={styles.formLabel}>
-              Tell us about your event
-            </Text>
             <TextInput
-              style={{height: 40}}
-              placeholder="event description"
+              style={{height: 80, margin: 10, width: '90%', fontSize: 16}}
+              placeholder="Tell us about your event"
+              multiline={true}
               onChangeText={(text) => this.setState({ description: text })}>
             </TextInput>
           </View>
@@ -248,6 +246,7 @@ const styles = StyleSheet.create({
   },
   form: {
     margin: 10,
+    width: '100%',
   },
   buttonContainer: {
     margin: 10,

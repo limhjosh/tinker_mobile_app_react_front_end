@@ -16,6 +16,7 @@ import {
   COLOR_BLUE,
   COLOR_BACKGROUND,
 } from '../components/styles/common'
+import { GlobalState } from '../global.js'
 
 export default class PizzaTranslator extends Component {
   constructor(props) {
@@ -40,8 +41,14 @@ export default class PizzaTranslator extends Component {
      })
      .then((response) => response.json())
      .then((responseJson) => {
-       console.log(responseJson)
-       this.setState({ userinfo: JSON.stringify(responseJson) })
+      console.log("Hi I'm Jeff")
+      console.log(responseJson.auth_token)
+      console.log(responseJson)
+      this.setState({ userinfo: JSON.stringify(responseJson) })
+      this.props.navigator.push('camera');
+     })
+     .catch((e) => {
+      alert('Sorry, credentials do not match :(');
      })
      .done()
    }
@@ -91,10 +98,6 @@ export default class PizzaTranslator extends Component {
             style={styles.buttonText}
           />
         </View>
-
-        <Text style={{padding: 10, fontSize: 22}}>
-          {this.state.userinfo}
-        </Text>
 
         <View style={styles.linkContainer}>
           <TouchableOpacity

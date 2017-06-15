@@ -35,6 +35,7 @@ export default class CommentScreen extends Component {
     .then((responseJson) => {
       console.log(responseJson.request.comments)
       this.setState({comments: responseJson.request.comments,
+        image: responseJson.request.request_photos[0].image,
       })
     })
     .done()
@@ -45,7 +46,7 @@ export default class CommentScreen extends Component {
        <View style={styles.container}>
          <View style={styles.logoContainer}>
            <Image
-             source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+             source={{uri:`http:${this.state.image}`}}
              style={styles.logoImage}
            />
          </View>
@@ -123,6 +124,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoImage: {
+    borderRadius: 80,
     width: 400,
     height: 200,
     resizeMode: 'contain',

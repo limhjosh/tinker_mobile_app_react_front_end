@@ -41,7 +41,7 @@ export default class RequestAdvisor extends Component {
         request: responseJson.request,
         request_id: responseJson.request.id,
         description: responseJson.request.description,
-        // image: responseJson.request.request_photos[0].image,
+        image: responseJson.request.request_photos[0].image,
         arrayOfUsers: responseJson.users,
       })
     })
@@ -56,7 +56,7 @@ export default class RequestAdvisor extends Component {
         <View style={{alignItems: 'center'}}>
           <Image
           style={{width: 200, height: 200, alignItems: 'center', justifyContent: 'center', borderRadius: 20}}
-            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+            source={{uri:`http:${this.state.image}`}}
           />
         </View>
 

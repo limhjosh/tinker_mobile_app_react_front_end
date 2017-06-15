@@ -3,6 +3,7 @@ import {
   AppRegistry,
   Image,
   StyleSheet,
+  ScrollView,
   Text,
   View,
 } from 'react-native';
@@ -32,6 +33,7 @@ export default class RequestScreen extends Component {
     .then((responseJson) => {
       console.log(responseJson.request.comments)
       this.setState({comments: responseJson.request.comments,
+        image: responseJson.request.request_photos[0].image,
       })
     })
     .done()
@@ -39,9 +41,10 @@ export default class RequestScreen extends Component {
    render() {
      return (
        <View style={styles.container}>
+
          <View style={styles.logoContainer}>
            <Image
-             source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+             source={{uri:`http:${this.state.image}`}}
              style={styles.logoImage}
            />
          </View>
@@ -57,13 +60,18 @@ export default class RequestScreen extends Component {
             </Text>
           </View>
         </View>
+
         <View>
+
           {
             this.state.comments.map((comment) => {
               return (<View key={comment.id} style={[styles.userContainer,styles.commentContainer]}><Text>{comment.user.username}: {comment.body}</Text></View>)
             })
+
           }
+
         </View>
+
       </View>
     );
   }
@@ -84,17 +92,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   logoContainer: {
+    marginTop: 10,
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
   },
   logoImage: {
+    borderRadius: 80,
     width: 400,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-    borderRadius: 20,
   },
   userContainer: {
     paddingTop: 10,

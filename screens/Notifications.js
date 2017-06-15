@@ -32,13 +32,9 @@ export default class Notifications extends Component {
     })
     .then((response) => {return response.json()})
     .then((responseJson) => {
-      // console.log("json response",responseJson[0].request_photos[0]);
       this.setState({
         requests: responseJson,
-        // description: responseJson[0].description,
-        // image: responseJson[0].request_photos[0]
       })
-      // console.log("this is description state", this.state.description)
     })
     .done()
   }
@@ -48,22 +44,22 @@ export default class Notifications extends Component {
     var self = this
     return this.state.requests.map( (request) => {
       return (
-        <View key={request.id}>
+        <View>
         <View style={styles.viewContainer}>
-          <Text style={styles.description}>
+          <Text key={request.id} style={styles.description}>
             {request.user.username}: {request.description}
           </Text>
         </View>
 
         <View style={{alignItems: 'center'}}>
-          <Image
+          <Image key={request.id}
           style={{width: 100, height: 100, alignItems: 'center', justifyContent: 'center', borderRadius: 20}}
-            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+            source={{uri:`http:${request.request_photos[0].image}`}}
           />
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button
+          <Button key={request.id}
             onPress={() => {self._submitButton(request)} }
             title="Give Advice"
             color="#000"
@@ -77,14 +73,14 @@ export default class Notifications extends Component {
    render() {
      return (
        <View style={styles.container}>
-
+        <ScrollView>
         <Text style={styles.title}>
           Notifications
         </Text>
 
         {this.renderRequests()}
 
-
+        </ScrollView>
       </View>
     );
   }

@@ -48,22 +48,22 @@ export default class RequestIndexScreen extends Component {
     var self = this
     return this.state.requests.map( (request) => {
       return (
-        <View key={request.id}>
+        <View>
         <View style={styles.viewContainer}>
-          <Text style={styles.description}>
+          <Text key={request.id} style={styles.description}>
             {request.description}
           </Text>
         </View>
 
         <View style={{alignItems: 'center'}}>
-          <Image
+          <Image key={request.id}
           style={{width: 100, height: 100, alignItems: 'center', justifyContent: 'center', borderRadius: 20}}
-            source={{uri: "https://exponent-file-upload-example.s3.amazonaws.com/1497402666049.png"}}
+            source={{uri:`http:${request.request_photos[0].image}`}}
           />
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button
+          <Button key={request.id}
             onPress={() => {self._onPressButton(request)} }
             title="View"
             color="#000"
@@ -77,14 +77,14 @@ export default class RequestIndexScreen extends Component {
    render() {
      return (
        <View style={styles.container}>
-
+        <ScrollView>
         <Text style={styles.title}>
-          Notifications
+          Past Pictures
         </Text>
 
         {this.renderRequests()}
 
-
+        </ScrollView>
       </View>
     );
   }
