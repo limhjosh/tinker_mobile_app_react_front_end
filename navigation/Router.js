@@ -9,7 +9,9 @@ import Notifications from '../screens/Notifications';
 import Explore from '../screens/ExploreScreen';
 import RequestAdvisor from '../screens/RequestAdvisorScreen';
 import RootNavigation from './RootNavigation';
-// import RequestScreen from '../screens/RequestScreen';
+import RequestScreen from '../screens/RequestScreen';
+import CommentScreen from '../screens/CommentScreen';
+ // import TempRequestScreen from '../screens/TempRequestScreen';
 
 export default createRouter(() => ({
   home: () => HomeScreen,
@@ -21,5 +23,8 @@ export default createRouter(() => ({
   explore: () => Explore,
   advisor: () => RequestAdvisor,
   rootNavigation: () => RootNavigation,
-  // request: () => RequestScreen,
+  request: () => RequestScreen,
+  comment: () => CommentScreen,
+  // request: () => TempRequestScreen,
+
 }));

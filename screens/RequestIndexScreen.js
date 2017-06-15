@@ -90,7 +90,7 @@ export default class Notifications extends Component {
   }
 
    _submitButton = (request) => {
-    this.props.navigator.push("comment", { request: request })
+    this.props.navigator.push("request", { request: request })
   };
 
 }
