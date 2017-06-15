@@ -18,13 +18,16 @@ import { GlobalState } from '../global.js'
 export default class RequestAdvisor extends Component {
   constructor(props) {
     super(props);
+    console.log(props)
+    console.log(this.props)
     this.state = {
+      request: this.props.request,
       request_id: '',
       description: '',
       arrayOfUsers: [],
       arrayOfAdvisors: [],
     };
-    fetch(`http://localhost:3000/users/1/requests/1`, {
+    fetch(`http://localhost:3000/requests/${this.state.request.id}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -35,9 +38,10 @@ export default class RequestAdvisor extends Component {
     .then((response) => {console.log('this is the fetch response', response);return response.json()})
     .then((responseJson) => {
       this.setState({
+        request: responseJson.request,
         request_id: responseJson.request.id,
         description: responseJson.request.description,
-        image: responseJson.request.request_photos[0].image,
+        // image: responseJson.request.request_photos[0].image,
         arrayOfUsers: responseJson.users,
       })
     })
@@ -113,7 +117,17 @@ export default class RequestAdvisor extends Component {
     );
   }
   _submitButton = () => {
-
+    fetch('http://localhost:3000/requests', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': GlobalState.cache.auth_token,
+      },
+      body: JSON.stringify({ request: { id: this.state.request.id, advisors: this.state.arrayOfAdvisors } })
+    })
+    .then()
+    this.props.navigator.push('profile');
   };
 }
 
