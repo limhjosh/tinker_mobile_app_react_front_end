@@ -7,6 +7,6 @@ The photos are then sent to [Tinker Backend](https://github.com/limhjosh/tinker_
 ## [View Demo and Documentation &rarr;](http://limhjosh.github.io)
 
 ### Added a Friend's List and Comments Feature
-![](https://image.ibb.co/foEJ0F/preview.jpg)
+![](preview.jpg)
 
 
